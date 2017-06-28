@@ -1,0 +1,24 @@
+{
+  "name": "mission_control_system",
+  "version": "1.0.0",
+  "description": "This is the mission control system that centralizes all processes under the Ground System for the CNU UAS Team.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CnuUasLab/MISCONSYS.git"
+  },
+  "keywords": [
+    "Mission",
+    "Control",
+    "System"
+  ],
+  "author": "davidkroell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CnuUasLab/MISCONSYS/issues"
+  },
+  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme"
+}
