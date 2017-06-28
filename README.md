@@ -9,7 +9,7 @@
 ## Version and Milestones
 Milestone | Name | Status
 --- | --- | ---
-1 |  Prepare Web-based Overalay | <b>Not Assigned</b>
+1 |  Prepare Web-based Overlay | <b>Not Assigned</b>
 2 | Interface with Interoperability | <b>Not Assigned</b>
 3 | Interface with IMG | <b>Not Assigned</b>
 4 | Mission Planning Module | <b>Not Assigned</b>
