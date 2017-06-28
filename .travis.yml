@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 language: node_js
 node_js:
     - "0.10"
@@ -7,3 +8,10 @@ before_install:
     - sh -e /etc/init.d/xvfb start
 before_script:
     - npm install
+=======
+lagnauge : javascript
+install : npm install
+install : npm install -g electron
+install : npm install -g nodejs
+script : npm test
+>>>>>>> 50ddfa4044f45590535a5f3e58b2d1ff71f44a30
