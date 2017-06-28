@@ -1,0 +1,5 @@
+lagnauge : javascript
+install : npm install
+install : npm install -g electron
+install : npm install -g nodejs
+script : npm test

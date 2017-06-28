@@ -4,7 +4,8 @@
   "description": "This is the mission control system that centralizes all processes under the Ground System for the CNU UAS Team.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test" : "node test.js"
   },
   "repository": {
     "type": "git",
