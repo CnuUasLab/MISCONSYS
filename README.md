@@ -5,6 +5,9 @@
 [![Build Status](https://travis-ci.org/CnuUasLab/MISCONSYS.svg?branch=master)](https://travis-ci.org/CnuUasLab/MISCONSYS)
 
 ### Build
+git init git@github.com:CnuUasLab/MISCONSYS.git 
+git submodule init
+
 ## Systems Engineering
 ### Integration
 ### Testing

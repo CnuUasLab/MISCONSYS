@@ -1,0 +1,3 @@
+[submodule "ngx-admin"]
+	path = ngx-admin
+	url = git@github.com:akveo/ngx-admin.git
