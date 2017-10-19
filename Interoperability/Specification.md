@@ -21,6 +21,7 @@ and of itself. By keeping track of the main process, we can control whether it's
 
 This is the general design specification that is occuring in this program. There are a few things happening behind the scene that are not shown in the picture.
 
+![alt text](https://github.com/CnuUasLab/MISCONSYS/blob/david.patch.spec/Interoperability/img/interop.jpg "Suggested Interop")
 
 The image details connections between the main process, and other external programs. These main processes are serviced information
 through an http server, were we serve nothing but a json object over an http server held on the central workstation. Since most
