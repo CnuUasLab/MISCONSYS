@@ -19,6 +19,59 @@ seperate tables.
 
 ## MySQL
 
+The SQL structure of the IMG portion is split between two tables. The two are populated at different points. The IMG system is supposed to detect new photos being recieved.
+Because of this, the IMG is set up into a system-level and an application-level interface. The camera code interacts with the system-level interface, and the application level code interacts with the front end, and vice versa.
+
+### Table
+<b> Photos Table </b>
+Attribute | Type
+ | --- | ---|
+Photo-ID | primary-int
+Photo Path | String
+Photo-longitude | double
+Photo-latitude | double
+Photo-altitude | double
+
+<b> Promoted Contacts Table </b>
+
+The contacts are promoted through a system on the front end. Since all of the photos are served through the MySQL Server, we can have 2-3 people looking through all available photos trying to see if there are promotable contacts.
+The table for this will be developed as we look at the desing of the competition, and as the contact data is developed.
+The interface is just as important for this to make sure that people promote contacts correctly, so there is a good setup with the correct number of contacts that are built up in a short period of time.
+
+Design team will have to go over this design, as well as the display, and to make sure that we have a good form that allows us to promote contacts properly.
+In time we may be able to artificially recognize photos that are captured, and to recognize if there are anomalies that show up using techniques such as linear regression, and artificial machine vision. This will come in time though.
+
 ## Interface
+
+The interface will be made up of several different programs.
+
+<b> Photo Class </b>
+```python
+
+class Photo():
+      # Initializes the photo information.
+      def __init__(self):
+          pass
+
+      # Stores photos to the MySQL Server.
+      def store_photo(self):
+          pass
+
+
+      # Posts photo to the interoperability server.
+      def post(self):
+          pass
+
+```
+
+<b> IMG Operation </b>
+```python
+
+
+```
+
+The camera code also needs to be able to interface with this system. We will investigate together, how we can test this.
+However, we need to look into things we can change to potentially change the operations of the camera code.
+
 
 
