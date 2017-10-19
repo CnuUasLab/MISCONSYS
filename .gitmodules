@@ -1,0 +1,6 @@
+[submodule "Interoperability/daemon_py"]
+	path = Interoperability/daemon_py
+	url = https://github.com/vixadd/daemon_py
+[submodule "Interoperability/interop"]
+	path = Interoperability/interop
+	url = https://github.com/auvsi-suas/interop
