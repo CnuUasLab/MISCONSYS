@@ -32,6 +32,20 @@ Because of this there are a few tasks that are specfic to the system design.
 
 Task | Description
 --- | ---
-main.py | program that has a specific function of starting up all processes and serving information that is recieved through these processes.
-mission.py | program that interfaces with the competition server, and spawns a daemon that posts telemetry to the competition server
+main.py | Program that has a specific function of starting up all processes and serving information that is recieved through these processes.
+mission.py | Program that interfaces with the competition server, and spawns a daemon that posts telemetry to the competition server
+FELC.js | This is just a resemblence for the front end. All of the front end's information will be gained from the http server.
+mav.py | This is a mavlink section of the code. It grabs information from the Plane, and it allows us to update telemetry.
+config.json | This is a placeholder for all of the configuration stuff in the program.
+Utils.py | Simple utility function that we can use to log information as we go along.
 
+A lot of the code examples can be found in the POKEMON repository in the CnuUasLab to use as an example for this year's code.
+
+# Interface
+
+<b> main </b>
+```python
+
+
+
+```
