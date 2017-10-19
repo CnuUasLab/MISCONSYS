@@ -177,3 +177,129 @@ while True:
         except sys.stderr:
                 util.errLog("ERR: Exit main on sys call. Terminating Sys call.")
 ```
+
+<b> mission </b>
+```python
+
+class Mission():
+   def __init__(self, hst, prt, usr, pss): #  (DAEMON PROCESS SPAWNED)
+   	pass
+
+   #==================
+   #
+   # Populates the mission components we need after each
+   # time they are retrieved from the main task.
+   #
+   # Serves the purpose of synchronizing with mavlink thread module.
+   #
+   #==================
+   def populateMissionComponents(self):           # (DAEMON SPAWNED)
+   	pass
+   	
+
+   #===================
+   #
+   # Returns whether we're logged
+   # into the competition server or not.
+   #
+   #===================
+   def isLoggedIn(self):
+   	pass
+
+   #====================
+   #
+   # Grabs obstacle data from
+   # interop server.
+   #
+   #====================
+   def getObstacles(self):
+   	pass
+
+       #=================================================
+       # Post a target to the server that may
+       #  or may not have image data with it.
+       #
+       #--------------params:--------------
+       #     pId                   -  Optional. The ID of the target.
+       #     pUser                 -  Optional. The ID of the user who created the target.
+       #     pType                 -  Target type, must be one of TargetType.
+       #     pLat                  -  Optional. Target latitude in decimal degrees.
+       #     pLon                  -  Optional. Target longitude in decimal degrees.
+       #     pOrient               -  Optional. Target orientation.
+       #     pShape                -  Optional. Target shape.
+       #     pBgColor              -  Optional. Target color.
+       #     pAlphanumeric         -  Optional. Target alphanumeric. [0-9, a-z, A-Z].
+       #     pAlphanumericColor    -  Optional. Target alphanumeric color.
+       #     pDescription          -  Optional. Free-form description of the target.
+       #     pAutonomous           -  Defaults to False. Indicates that this is an ADLC target.
+       #     pTeamId               -  Optional. The username of the team to submit targets.
+       #     pActionableOverride   -  Optional. Manually sets the target to be actionable.
+       #     pImagePath            -  Optional. Image path to be specified if involved in post.
+       #=================================================
+       def postTarget(self, pId, pUser, pType, pLat, pLon, pOrient, pShape,
+                      pass 
+       
+   #========================
+   # Post telemetry to the server.
+   #
+   #-------params:----------
+   #	  lat - latitude value of plane.
+   #	  lon - longitude value of plane.
+   #	  alt - altitutde of the plane.
+   #	  hdg - uas heading fo plane.
+   #========================
+   def postTelemetry(self, lat=38.145245, lon=-76.427946, alt=50, hdg=90):
+               pass
+
+   #=====================
+   # Get the system time.
+   #---------------------
+   #=====================
+   def getSystemTime(self):
+   	pass
+
+   #=============================
+   # 	   Post a detected target on
+   #	the field through the SIRE module.
+   #
+   #-------params:---------------
+   #	  typ - The type of target
+   #	  lat - latitude location of the target
+   #	  lon - longitude location of the target
+   #	  ori - Orientation of the target
+   #	  shp - Shape of the target
+   #	  bgc - background color of the taget
+   #	  letter - Letter printed on the front of the target
+   #	  color - color of the target text.
+   #	  image_path - path of the image where target is found.
+   #============================
+   def postTarget(self, typ='standard', lat=38.145215, lon=-76.427942, ori='n', shp='square',
+   	pass
+
+   #==========================
+   #
+   # Retrieve the mission data for the competition.
+   #
+   #==========================
+   def getMissionData(self):
+   	pass
+```
+
+<b> mav </b>
+```python
+class Mavlink():
+    def __init__(self, ip, port):
+        pass
+
+    # Function called in the thread to constantly update packets. (DAEMON PROCESS SPAWNED)
+    def startUDPStream(self):
+        pass
+
+    # Accessor, to get the current packet
+    def getMavPacket(self):
+        pass
+
+    # Posts data to the airplane.
+    def postData(self, packet):
+        pass
+```
