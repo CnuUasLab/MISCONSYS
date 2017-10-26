@@ -24,13 +24,14 @@ Because of this, the IMG is set up into a system-level and an application-level 
 
 ### Table
 <b> Photos Table </b>
-Attribute | Type
- | --- | ---|
-Photo-ID | primary-int
-Photo Path | String
-Photo-longitude | double
-Photo-latitude | double
-Photo-altitude | double
+
+Attribute | Description | Type
+--- | --- | ---
+Photo-ID | primary-key identification | primary-int
+Photo Path | Folder path of the picture | String
+Photo-longitude | Logitude location the photo was taken | double
+Photo-latitude | Latitude location that the photo was taken | double
+Photo-altitude | Altitidue at which the photo was taken. | double
 
 <b> Promoted Contacts Table </b>
 
