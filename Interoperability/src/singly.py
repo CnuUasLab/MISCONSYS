@@ -11,31 +11,53 @@
 #                                               #
 #===============================================#
 
-class Singleton:
+def Singleton(c):
     """
-       Implementation for Singleton pattern for inheritence
+       Implementation for Singleton pattern for decoration
        By Singleton classes
+
+       c: Class to be implemented as a singleton.
     """
 
-    __Instance__ = None
+    __Instances__ = {}
 
-    def __init__(self):
-        """ 
-        Create singleton instance or use instance already created.
-        This is a virtually private constructor.
-        DO NOT CALL THIS - Call getInstance() when accessing
-        singleton class.
-        """
-        if (Singleton.__Instance__ == None):
-            Singleton.__Instance__ = self
-        else:
-            raise Exception("singleton instance defined.")
-
-    @staticmethod
     def getInstance():
         """ Static access method for the current instance """
-        if(Singleton.__Instance__ == None):
-            Singleton()
+        
+        if (c not in __Instances__):
+            __Instances__[c] = c()
+        return __Instances__[c]
+    
+    return getInstance
+        
 
-        return Singleton.__Instance__
+#
+#  This is for demonstration purposes
+#  Just to use as a testing file.
+#
+@Singleton    # Use decorators for all subsequent classes.
+class TestClass():
+    def __init__(self):
+        self.count = 0
+    def inc(self):
+        self.count += 1
 
+
+
+def test():
+    #Instantiate two seperate instances of testclass
+    test1 = TestClass()
+    test2 = TestClass()
+
+    test1.inc()
+
+    if(not(test1.count == test2.count)):
+        return False
+    else:
+        return True
+
+
+if __name__ == "__main__":
+    result = test()
+    print "Singleton class testing: Result: ", result
+    
