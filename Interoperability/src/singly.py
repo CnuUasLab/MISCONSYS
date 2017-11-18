@@ -20,4 +20,22 @@ class Singleton:
     __Instance__ = None
 
     def __init__(self):
-        """ Create singleton instance """
+        """ 
+        Create singleton instance or use instance already created.
+        This is a virtually private constructor.
+        DO NOT CALL THIS - Call getInstance() when accessing
+        singleton class.
+        """
+        if (Singleton.__Instance__ == None):
+            Singleton.__Instance__ = self
+        else:
+            raise Exception("singleton instance defined.")
+
+    @staticmethod
+    def getInstance():
+        """ Static access method for the current instance """
+        if(Singleton.__Instance__ == None):
+            Singleton()
+
+        return Singleton.__Instance__
+
