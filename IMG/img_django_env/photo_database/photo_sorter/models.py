@@ -43,7 +43,7 @@ class Photo(models.Model):
     photo_longitude = models.DecimalField(max_digits = 7, decimal_places = 4)
     
     # photo-altitude
-    photo_altitude = models.DecimalField(max_digits = 7, decimal_places = 4)
+    photo_altitude = models.DecimalField(max_digits = 10, decimal_places = 4)
     
     
     # *** ORIENTATION ***
@@ -76,8 +76,8 @@ class Photo(models.Model):
     )
     
     
-    
-    # choises for shape
+    # *** SHAPES ***
+    # choices for shape
     CIRCLE = 'circle'
     SEMICIRCLE = 'semicircle'
     QUARTER_CIRCLE = 'quarter circle'
@@ -117,15 +117,53 @@ class Photo(models.Model):
     
     
     
+    # color choices
+    WHITE = 'white'
+    BLACK = 'black'
+    GRAY = 'gray'
+    RED = 'red'
+    BLUE = 'blue'
+    GREEN = 'green'
+    YELLOW = 'yellow'
+    PURPLE = 'purple'
+    BROWN = 'brown'
+    ORANGE = 'orange'
+    
+    COLOR_CHOICES = (
+        (BLACK, 'black'),
+        (BLUE, 'blue'),
+        (BROWN, 'brown'),
+        (GRAY, 'gray'),
+        (GREEN, 'green'),
+        (ORANGE, 'orange'),
+        (PURPLE, 'purple'),
+        (RED, 'red'),
+        (WHITE, 'white'),
+        (YELLOW, 'yellow'),
+    )
+    
+    
     
     # color of the object
-    background_color = models.CharField(max_length = 20, default="none")
+    background_color = models.CharField(
+        max_length = 20,
+        choices = COLOR_CHOICES,
+        default="none",
+    )
     
-    # the letter on the shape
-    alphanumeric = models.CharField(max_length = 4, default="none")
     
     # the color of the letter
-    alphanumeric_color = models.CharField(max_length = 20, default="none")
+    alphanumeric_color = models.CharField(
+        max_length = 20,
+        choices = COLOR_CHOICES,
+        default="none",
+    )
+    
+    
+    # the letter or number on the shape (0-9, A-Z, a-z)
+    alphanumeric = models.CharField(max_length = 4, default="none")
+    
+    
     
     
     # toString prints file path
