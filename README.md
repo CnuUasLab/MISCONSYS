@@ -5,8 +5,8 @@
 [![Build Status](https://travis-ci.org/CnuUasLab/MISCONSYS.svg?branch=master)](https://travis-ci.org/CnuUasLab/MISCONSYS)
 
 ### Execution
-     <b> Put instructions here on how to run the programs, and initiate all of the processes required
-     	 at the time we run the ground station control at the competition. </b>
+     Put instructions here on how to run the programs, and initiate all of the processes required
+     at the time we run the ground station control at the competition.
 
 ### Development
 ## Interoperability
