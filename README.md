@@ -12,7 +12,7 @@
 In order to start development there are a number of packages that must be installed. For the purposes of integration, python's
 testing package must be installed to instantiate tests for all components of the system.
 ```bash
-sudo apt-get install py.test
+sudo apt-get install python-logilab-common
 ```
 By running ```py.test``` in the root of the repository, the developer will run the test instance for all files.
 
