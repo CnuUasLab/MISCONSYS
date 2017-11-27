@@ -1,19 +1,25 @@
+#==========================================#
+#                                          #
+#	Continuous Integration w. TravisCI #
+#                                          #
+#           Author: Cameron Calpin         #
+#                   David Kroell           #
+#                                          #
+#==========================================#
+
 language: 
-	- node_js
-	- python
+  - python
 
-node_js: 
-	- "0.10"
-
+# using python 2.7 for now
 python:
-	- "2.7"
+  - "2.7"
+
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+
+# command to run tests
 script:
-	- node test.js
-	- pytest
-
-before_install:
-	- export DISPLAY=:0.0
-	- sh -e /etc/init.d/xvfb start
-
-before_script:
-	- npm install
+  - py.test test.py -v
