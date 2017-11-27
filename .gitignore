@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# I don't want compilation files
+*.pyc

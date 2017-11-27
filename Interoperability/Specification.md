@@ -21,7 +21,10 @@ and of itself. By keeping track of the main process, we can control whether it's
 
 This is the general design specification that is occuring in this program. There are a few things happening behind the scene that are not shown in the picture.
 
+<<<<<<< HEAD
+=======
 ![alt text](https://github.com/CnuUasLab/MISCONSYS/blob/david.patch.spec/Interoperability/img/interop.jpg "Suggested Interop")
+>>>>>>> master
 
 The image details connections between the main process, and other external programs. These main processes are serviced information
 through an http server, were we serve nothing but a json object over an http server held on the central workstation. Since most
@@ -32,6 +35,11 @@ Because of this there are a few tasks that are specfic to the system design.
 
 Task | Description
 --- | ---
+<<<<<<< HEAD
+main.py | program that has a specific function of starting up all processes and serving information that is recieved through these processes.
+mission.py | program that interfaces with the competition server, and spawns a daemon that posts telemetry to the competition server
+
+=======
 main.py | Program that has a specific function of starting up all processes and serving information that is recieved through these processes.
 mission.py | Program that interfaces with the competition server, and spawns a daemon that posts telemetry to the competition server
 FELC.js | This is just a resemblence for the front end. All of the front end's information will be gained from the http server.
@@ -303,3 +311,4 @@ class Mavlink():
     def postData(self, packet):
         pass
 ```
+>>>>>>> master
