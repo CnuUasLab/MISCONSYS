@@ -9,7 +9,7 @@ python:
      - "2.7"
 script:
      - node test.js
-     - pytest
+     - py.test
 
 before_install:
      - export DISPLAY=:0.0
