@@ -1,19 +1,19 @@
-language: 
-	- node_js
-	- python
+language:
+     - node_js
+     - python
 
-node_js: 
-	- "0.10"
+node_js:
+     - "0.10"
 
 python:
-	- "2.7"
+     - "2.7"
 script:
-	- node test.js
-	- pytest
+     - node test.js
+     - py.test
 
 before_install:
-	- export DISPLAY=:0.0
-	- sh -e /etc/init.d/xvfb start
+     - export DISPLAY=:0.0
+     - sh -e /etc/init.d/xvfb start
 
 before_script:
-	- npm install
+     - npm install
