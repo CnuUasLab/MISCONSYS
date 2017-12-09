@@ -1,8 +1,25 @@
-language: node_js
-node_js: "0.10"
-script: node test.js
-before_install:
-    - export DISPLAY=:0.0
-    - sh -e /etc/init.d/xvfb start
-before_script:
-    - npm install
+#==========================================#
+#                                          #
+#	Continuous Integration w. TravisCI #
+#                                          #
+#           Author: Cameron Calpin         #
+#                   David Kroell           #
+#                                          #
+#==========================================#
+
+language: 
+  - python
+
+# using python 2.7 for now
+python:
+  - "2.7"
+
+
+# command to install dependencies
+install:
+  - pip install -r Requirements.txt
+
+
+# command to run tests
+script:
+  - py.test test.py -v
