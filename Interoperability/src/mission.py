@@ -31,12 +31,11 @@ from daemon import Daemon
 #       pPort - port that the competition server runs on
 #       pUser - Username for the competition server
 #       pPass - Password for the competition server
-#       pPID  - Process ID for the daemon - Do not mess with this.
 #
 #=========================================
-class Mission():
+class Mission(Daemon):
     def __init__(self, pHost="0.0.0.0", pPort="8080",
-                 pUser="testadmin", pPass="testpass", pPID="./pid/mission_proc.pid"):
+                 pUser="testadmin", pPass="testpass"):
 
         # Identify Host and Port foir class vars
         self.host = pHost
@@ -75,17 +74,51 @@ class Mission():
                                                   password = self.password
                                                   )
                     self.logged_in = True
+
+                    # Start Daemon process
+                    
                 except requests.ReadTimeout:
                     self.logged_in = False
                     sys.exit()
-                    
-                    # Start Daemon Process here.
-                    
                 except interop.exceptions.InteropError:
                     sys.exit() # We didn't make it
                 except requests.exceptions..ConnectionError:
                     self.logged_in = False
 
+<<<<<<< HEAD
+
+    #=======================================================
+    #   Method to instantiate the class for the
+    #  daemon process within the program.
+    #-----------------params-------------------
+    # func_def: A defined function to run within the daemon.
+    #
+    #---------------returns--------------------
+    #  The class definition of the daemon abstraction that
+    # is instantiated in the function.
+    #=======================================================
+    def getDaemon(func_def='/dev/null'):
+        if(not(self.mission_daemon == None)):
+            pass
+            #  -   The daemon process for this module is already instantiated.
+            #  -   What the fuck are you doing?
+
+
+        # instantiate the new class and return it.
+
+
+    #====================================================
+    #
+    #  Posts telemetry to the competition server
+    #
+    #---------------------returns------------------------
+    #  Boolean of successful post to the remote server.
+    #====================================================
+    def postTelemetry():
+        pass
+
+    
+=======
 # ==================
     #
     # Populates the mission components we need after each
@@ -227,3 +260,4 @@ class Mission():
         return m.json()
         
         
+>>>>>>> 23453f2f142e2e8749db911967ef555ef403ee11
