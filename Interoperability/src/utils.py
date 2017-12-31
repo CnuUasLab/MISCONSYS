@@ -1,5 +1,10 @@
 import os
+from singleton import Singleton
 
+#===============
+# Static class for OS
+# Constant use on headers.
+#===============
 class bcolors:
 	HEADER = '\033[95m'
     	OKBLUE = '\033[94m'
@@ -12,6 +17,14 @@ class bcolors:
     	UNDERLINE = '\033[4m'
     	ERROR = '\033[1;41m'
 
+
+#=============================
+#
+# Utilities class for loging messages in the console
+# Class takes on a singleton pattern.
+#
+#=============================
+@Singleton
 class Utils():
 	def __init__(self):
 		self.logs = []

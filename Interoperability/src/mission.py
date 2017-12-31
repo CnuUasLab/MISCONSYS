@@ -12,11 +12,17 @@
 import sys
 import requests
 import re
-from utils import Utils
-import singleton
 
+from utils import Utils
+from singleton import Singleton
+
+# Import interoperability client
 sys.path.insert(0, "../interop/client/")
 import interop
+
+# Import daemon library
+sys.path.insert(0, "../daemon_py/")
+from daemon import Daemon
 
 #==================================
 #
@@ -30,7 +36,7 @@ import interop
 #
 #==================================
 @Singleton
-class Mission():
+class Mission(Daemon):
 	def __init__(self, hst, prt, usr, pss):
 		self.util = Utils()
 
@@ -74,17 +80,20 @@ class Mission():
                         #self.logged_in = True
 			self.util.succLog("Successfully logged into competition server.")
 
-			self.util.log("Attempting to start Competition Server Retrieval Daemon.")
-			
-			# Start Daemon			
-			
-			self.util.succLog("Successfully started mission retrieval thread.")
-
 		except interop.exceptions.InteropError:
 			self.util.errLog("ERROR: Invalid login to competition server.")
 		except requests.exceptions.ConnectionError:
 			self.util.errLog("Connection error with competition server - Are you sure the Server is Running?")
 			self.logged_in = False
+
+
+        #=====================
+        #
+	# Starts the daemon process
+	#
+        #=====================
+        def run(self):
+		self.populateMissionComponents()
 
 	#==================
 	#
@@ -212,10 +221,20 @@ class Mission():
                               			altitude_msl=alt,
                               			uas_heading=hdg
 						)
-		if (self.isLoggedIn()):
-			self.client.post_telemetry(telemetry)
+		self.postTelemetryHelper(telemetry)
 
-		self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
+        #=========================
+        # Post Telemetry Helper for the Mission system
+        #
+        #-----------params:------
+        # pTel - Telemtrey Object to post
+        #========================
+        def postTelemetryHelper(self, pTel):
+                if (self.isLoggedIn()):
+                        self.client.post_telemetry(telemetry)
+                        self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
+                                                                
+                
 
 	#=====================
 	# Get the system time.
@@ -267,3 +286,18 @@ class Mission():
 		return r.json()
 
 
+        #==========================
+        #
+        # Conducts a consecutive start of all daemons
+        #
+        #==========================
+        def startDaemons(self):
+                self.mission_daemon.start()
+
+        #==========================
+        #
+        # Conducts a consecutive stop of all daemons
+        #
+        #==========================
+        def stopDaemon(self):
+                self.mission_daemon.stop()
