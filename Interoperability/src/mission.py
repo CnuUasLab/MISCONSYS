@@ -75,7 +75,7 @@ class Mission(Daemon):
                                                   )
                     self.logged_in = True
 
-                    # Start Daemon process
+                    self.mission_daemon = getDaemon(func_def=self.populateMissionComponents)
                     
                 except requests.ReadTimeout:
                     self.logged_in = False
@@ -85,7 +85,7 @@ class Mission(Daemon):
                 except requests.exceptions..ConnectionError:
                     self.logged_in = False
 
-<<<<<<< HEAD
+
 
     #=======================================================
     #   Method to instantiate the class for the
@@ -98,13 +98,10 @@ class Mission(Daemon):
     # is instantiated in the function.
     #=======================================================
     def getDaemon(func_def='/dev/null'):
-        if(not(self.mission_daemon == None)):
-            pass
-            #  -   The daemon process for this module is already instantiated.
-            #  -   What the fuck are you doing?
-
-
-        # instantiate the new class and return it.
+        class MissionDaemon(Daemon):
+            def run():
+                func_def()
+    
 
 
     #====================================================
@@ -118,8 +115,8 @@ class Mission(Daemon):
         pass
 
     
-=======
-# ==================
+
+    # ==================
     #
     # Populates the mission components we need after each
     # time they are retrieved from the main task.
@@ -145,8 +142,6 @@ class Mission(Daemon):
                 self.mission_components['OBS'] = obstacle_data
 
                 self.componentsAvailable = True
-
-        pass
 
     # ===================
     #
@@ -215,7 +210,7 @@ class Mission(Daemon):
         # ========================
     def postTelemetry(self, lat=38.145245, lon=-76.427946, alt=50, hdg=90):
         tel = interop.Telemetry(latitude = lat, longitude = lon, altitude = alt, heading = hdg)
-        pass
+        self.client.post_telemetry(tel)
 
     # =====================
     # Get the system time.
@@ -258,6 +253,3 @@ class Mission(Daemon):
     def getMissionData(self):
         m = self.client.get(self.URIs['MIS'])
         return m.json()
-        
-        
->>>>>>> 23453f2f142e2e8749db911967ef555ef403ee11
