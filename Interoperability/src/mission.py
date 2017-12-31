@@ -37,7 +37,11 @@ from daemon import Daemon
 #==================================
 @Singleton
 class Mission(Daemon):
-	def __init__(self, hst, prt, usr, pss):
+	def __init__(self, hst, prt, usr, pss, location="./daemons/mission.pid"):
+
+		# Call super constructor for the Daemon Meta Class
+		super(Mission, self).__init__(location)
+
 		self.util = Utils()
 
 		self.host = hst
