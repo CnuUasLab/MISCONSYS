@@ -1,173 +1,153 @@
-#=====================================================#
-#                                                     #
-#            Mission Handeler, and Processor          #
-#         Center for the Ground Control Station       #
-#                                                     #
-#                Author: David Kroell                 #
-#                        Joseph Doye                  #
-#                                                     #
-#               Version: 1.0.1                        #
-#                                                     #
-#=====================================================#
+#============================================#
+#					     #
+#		Mission Handler              #
+#   Handeler for all mission-specific 	     #
+#                      functions             #
+#					     #
+#	      Author: davidkroell	     #
+#		      Joey Doye		     #
+#					     #
+#============================================#
 
 import sys
 import requests
-import thread
 import re
+from utils import Utils
+import singleton
 
-sys.path.insert(0, "../interop/client")
+sys.path.insert(0, "../interop/client/")
 import interop
 
-sys.path.insert(0, "../daemon_py")
-from daemon import Daemon
-
-#=========================================
+#==================================
 #
-# Mission module class for the mission
-# that is a singleton class.
+# Missions module for each mission.
+# Class constitutes a singleton pattern
+#------params:---------------------
+#	hst - hostname/ipaddr
+#	prt - port that the competition sever runs on.
+#	usr - Username for the server
+#	pss - Password for the server
 #
-#-----params:----------------------------
-#       pHost - hostname
-#       pPort - port that the competition server runs on
-#       pUser - Username for the competition server
-#       pPass - Password for the competition server
-#
-#=========================================
-class Mission(Daemon):
-    def __init__(self, pHost="0.0.0.0", pPort="8080",
-                 pUser="testadmin", pPass="testpass"):
+#==================================
+@Singleton
+class Mission():
+	def __init__(self, hst, prt, usr, pss):
+		self.util = Utils()
 
-        # Identify Host and Port foir class vars
-        self.host = pHost
-        self.port = pPort
+		self.host = hst
+		self.port = prt
 
-        # Identify username and password.
-        self.username = username
-        self.password = password
+		self.URIs = {}
+		self.URIs['LOG'] = "/api/login"
+		self.URIs['OBS'] = "/api/obstacles"
+		self.URIs['TEL'] = "/api/telemetry"
+		self.URIs['MIS'] = "/api/missions"
 
-        # Initialize object component data
-        self.URIs = {}
-        self.Mission_Components = {}
-        
-        # Initialize individual mission components
-        self.Mission_Components['OBS'] = {}
-        self.Mission_Components['WYP'] = {}
-        self.Mission_Components['STI'] = {}
-        self.Mission_Components['TAR'] = {}
-        self.Mission_Components['FLZ'] = {}
+		self.componentsAvailable = False
 
-        # Initialize server URIs
-        self.URIs['LOG'] = "/api/login"
-        self.URIs['OBS'] = "/api/obstacles"
-        self.URIs['TEL'] = "/api/telemetry"
-        self.URIs['MIS'] = "/api/missions"
+		self.mission_components = {}
 
-        #Initialize condition variables
-        self.missionComponentsAvailable = False
+		self.mission_components['OBS'] = {}
+		self.mission_components['WYP'] = {}
+		self.mission_components['STI'] = {}
+		self.mission_components['TAR'] = {}
+		self.mission_components['FLZ'] = {}
 
-        self.logged_in = False
-        try:
-            while not self.logged_in:
-                try:
-                    self.client = interop.Client( url=self.host+":"+self.port,
-                                                  username = self.username,
-                                                  password = self.password
-                                                  )
-                    self.logged_in = True
+		self.sysTime = None
 
-                    self.mission_daemon = getDaemon(func_def=self.populateMissionComponents)
-                    
-                except requests.ReadTimeout:
-                    self.logged_in = False
-                    sys.exit()
-                except interop.exceptions.InteropError:
-                    sys.exit() # We didn't make it
-                except requests.exceptions..ConnectionError:
-                    self.logged_in = False
+		self.username = usr
+		self.password = pss
 
+		self.logged_in = False
+		try:
+                        while not self.logged_in:
+                                try:
+			                self.client = interop.Client( url=self.host+":"+self.port,
+							              username=self.username,
+							              password=self.password
+				        )
+                                        self.logged_in = True
+                                except requests.ReadTimeout:
+                                        self.logged_in = False
+                                        self.util.log("RETR: Login Competition server")
 
+                        #self.logged_in = True
+			self.util.succLog("Successfully logged into competition server.")
 
-    #=======================================================
-    #   Method to instantiate the class for the
-    #  daemon process within the program.
-    #-----------------params-------------------
-    # func_def: A defined function to run within the daemon.
-    #
-    #---------------returns--------------------
-    #  The class definition of the daemon abstraction that
-    # is instantiated in the function.
-    #=======================================================
-    def getDaemon(func_def='/dev/null'):
-        class MissionDaemon(Daemon):
-            def run():
-                func_def()
-    
+			self.util.log("Attempting to start Competition Server Retrieval Daemon.")
+			
+			# Start Daemon			
+			
+			self.util.succLog("Successfully started mission retrieval thread.")
 
+		except interop.exceptions.InteropError:
+			self.util.errLog("ERROR: Invalid login to competition server.")
+		except requests.exceptions.ConnectionError:
+			self.util.errLog("Connection error with competition server - Are you sure the Server is Running?")
+			self.logged_in = False
 
-    #====================================================
-    #
-    #  Posts telemetry to the competition server
-    #
-    #---------------------returns------------------------
-    #  Boolean of successful post to the remote server.
-    #====================================================
-    def postTelemetry():
-        pass
+	#==================
+	#
+	# Populates the mission components we need after each
+	# time they are retrieved from the main task.
+	#
+	# Serves the purpose of synchronizing with mavlink thread module.
+	#
+	#==================
+	def populateMissionComponents(self):
+		while True:
+			if not self.componentsAvailable:
+				mission_data = self.getMissionData()[0]
+				obstacle_data = self.getObstacles()
 
-    
+				# Update mission components
 
-    # ==================
-    #
-    # Populates the mission components we need after each
-    # time they are retrieved from the main task.
-    #
-    # Serves the purpose of synchronizing with mavlink thread module.
-    #
-    # ==================
-    def populateMissionComponents(self):
-        while True:
-            if not self.componentsAvailable:
-                mission_data = self.getMissionData()[0]
-                obstacle_data = self.getObstacles()
+				self.mission_components['WYP'] = mission_data['mission_waypoints']
+				self.mission_components['FLZ'] = mission_data['fly_zones']
 
-                # Update mission components
+				self.mission_components['TAR']['emergent_lastKnown'] = mission_data['emergent_last_known_pos']
+				self.mission_components['TAR']['off_axis'] = mission_data['off_axis_target_pos']
+				self.mission_components['TAR']['air_drop'] = mission_data['air_drop_pos']
 
-                self.mission_components['WYP'] = mission_data['mission_waypoints']
-                self.mission_components['FLZ'] = mission_data['fly_zones']
+				self.mission_components['OBS'] = obstacle_data
 
-                self.mission_components['TAR']['emergent_lastKnown'] = mission_data['emergent_last_known_pos']
-                self.mission_components['TAR']['off_axis'] = mission_data['off_axis_target_pos']
-                self.mission_components['TAR']['air_drop'] = mission_data['air_drop_pos']
+				self.componentsAvailable = True
 
-                self.mission_components['OBS'] = obstacle_data
+	#========================
+	#
+	# Retrieves mission components from the mission class.
+	# Triggers condition variable to allow for a new set to be retrieved.
+	#
+	#========================
+	def getMissionComponents(self):
+		if self.componentsAvailable:
+			self.componentsAvailable = False
+			return self.mission_components
 
-                self.componentsAvailable = True
+	#===================
+	#
+	# Returns whether we're logged
+	# into the competition server or not.
+	#
+	#===================
+	def isLoggedIn(self):
+		return self.logged_in
 
-    # ===================
-    #
-    # Returns whether we're logged
-    # into the competition server or not.
-    #
-    # ===================
-    def isLoggedIn(self):
-        #return true or false depending on connection status
-        return self.logged_in
+	#====================
+	#
+	# Grabs obstacle data from
+	# interop server.
+	#
+	#====================
+	def getObstacles(self):
+		r = self.client.get(self.URIs['OBS'])
+		return r.json()
 
-    # ====================
-    #
-    # Grabs obstacle data from
-    # interop server.
-    #
-    # ====================
-    def getObstacles(self):
-        r = self.client.get(self.URIs['OBS'])
-        return r.json()
-
-        # =================================================
+        #=================================================
         # Post a target to the server that may
         #  or may not have image data with it.
         #
-        # --------------params:--------------
+        #--------------params:--------------
         #     pId                   -  Optional. The ID of the target.
         #     pUser                 -  Optional. The ID of the user who created the target.
         #     pType                 -  Target type, must be one of TargetType.
@@ -183,73 +163,107 @@ class Mission(Daemon):
         #     pTeamId               -  Optional. The username of the team to submit targets.
         #     pActionableOverride   -  Optional. Manually sets the target to be actionable.
         #     pImagePath            -  Optional. Image path to be specified if involved in post.
-        # =================================================
-
-    def postTarget(self, pId, pUser, pType, pLat, pLon, pOrient, pShape,
+        #=================================================
+        def postTarget(self, pId, pUser, pType, pLat, pLon, pOrient, pShape,
                        pBgColor, pAlphanumeric, pAlphanumericColor, pDescription,
                        pActionableOverride, pAutonomous=False, pTeamId="CNU_IMPRINT",
                        pImagePath=None):
-        thisTarget = interop.odlc(self, id = pId,user =  pUser,type =  pType,latitude =  pLat,longitude = pLon,orientation = pOrient,shape = pShape,
-                       background = pBgColor,ahphanumeric =  pAlphanumeric,alphanumeric_color = pAlphanumericColor,description = pDescription,
-                       actionable_override = pActionableOverride, pAutonomous=False, pTeamId="CNU_IMPRINT",
-                       pImagePath=None)
-        if(self.client.isLoggedIn()):
 
-            self.client.post_target(thisTarget)
+                imageAvailable = (pImagePath != None)
+                
+                mTarget = interop.Target(id=pId, user=pUser, type=pType,
+                                        latitutde=pLat, longitude=pLon,
+                                        orientation=pOrient, shape=pShape,
+                                        background_color=pBgColor, alphanumeric=pAlphanumeric,
+                                        alphanumeric_color=pAlphanumericColor, description=pDescription,
+                                        autonomous=pAutonomous, team_id=pTeamId,
+                                        actionable_override=pActionableOverride)
 
+                if(self.client.isLoggedIn()):
+                        self.client.post_target(mTarget)
+                        if(imageAvailable):
+                                fileTypes = ['.jpg', '.png']
+                                imagePathValid = False
+                                for fileType in fileTypes:
+                                        if(pImagePath.endswith(fileType)):
+                                                imagePathValid = True
 
+                                if(imagePathValid):
+                                        try:
+                                                mImage = Image(pImagePath)
+                                                self.client.post_target_image(pId, mImage)
+                                        except IOException:
+                                                self.util.err("ERROR: Error loading image file.")
+                
+        
+	#========================
+	# Post telemetry to the server.
+	#
+	#-------params:----------
+	#	  lat - latitude value of plane.
+	#	  lon - longitude value of plane.
+	#	  alt - altitutde of the plane.
+	#	  hdg - uas heading fo plane.
+	#========================
+	def postTelemetry(self, lat=38.145245, lon=-76.427946, alt=50, hdg=90):
 
-        # ========================
-        # Post telemetry to the server.
-        #
-        # -------params:----------
-        #	  lat - latitude value of plane.
-        #	  lon - longitude value of plane.
-        #	  alt - altitutde of the plane.
-        #	  hdg - uas heading fo plane.
-        # ========================
-    def postTelemetry(self, lat=38.145245, lon=-76.427946, alt=50, hdg=90):
-        tel = interop.Telemetry(latitude = lat, longitude = lon, altitude = alt, heading = hdg)
-        self.client.post_telemetry(tel)
+		telemetry = interop.Telemetry(latitude=lat,
+                              			longitude=lon,
+                              			altitude_msl=alt,
+                              			uas_heading=hdg
+						)
+		if (self.isLoggedIn()):
+			self.client.post_telemetry(telemetry)
 
-    # =====================
-    # Get the system time.
-    # ---------------------
-    # =====================
-    def getSystemTime(self):
-        return self.mission_components['STI']
+		self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
 
-    # =============================
-    # 	   Post a detected target on
-    #	the field through the SIRE module.
-    #
-    # -------params:---------------
-    #	  typ - The type of target
-    #	  lat - latitude location of the target
-    #	  lon - longitude location of the target
-    #	  ori - Orientation of the target
-    #	  shp - Shape of the target
-    #	  bgc - background color of the taget
-    #	  letter - Letter printed on the front of the target
-    #	  color - color of the target text.
-    #	  image_path - path of the image where target is found.
-    # ============================
-    def postTarget(self, typ='standard', lat=38.145215, lon=-76.427942, ori='n', shp='square',):
-        target = interop.odlc(type=typ,
+	#=====================
+	# Get the system time.
+	#---------------------
+	#=====================
+	def getSystemTime(self):
+		return self.mission_components['STI']
+
+	#=============================
+	# 	   Post a detected target on
+	#	the field through the SIRE module.
+	#
+	#-------params:---------------
+	#	  typ - The type of target
+	#	  lat - latitude location of the target
+	#	  lon - longitude location of the target
+	#	  ori - Orientation of the target
+	#	  shp - Shape of the target
+	#	  bgc - background color of the taget
+	#	  letter - Letter printed on the front of the target
+	#	  color - color of the target text.
+	#	  image_path - path of the image where target is found.
+	#============================
+	def postTarget(self, typ='standard', lat=38.145215, lon=-76.427942, ori='n', shp='square',
+				 bgc='green', letter='A', color='white', image_path='~/image.png'):
+
+		target = interop.Target(type=typ,
                         latitude=lat,
                         longitude=lon,
                         orientation=ori,
-                        shape=shp)
+                        shape=shp,
+                        background_color=bgc,
+                        alphanumeric=letter,
+                        alphanumeric_color=color)
 
-        target = client.post_telemetry(target)
+		target = client.post_target(target)
 
-        self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json()) - 1]['timestamp']
-        # ==========================
-        #
-        # Retrieve the mission data for the competition.
-        #
-        # ==========================
+		with open(image_path, 'rb') as f:
+    			image_data = f.read()
+    			self.client.put_target_image(target.id, image_data)
 
-    def getMissionData(self):
-        m = self.client.get(self.URIs['MIS'])
-        return m.json()
+	#==========================
+	#
+	# Retrieve the mission data for the competition.
+	#
+	#==========================
+	def getMissionData(self):
+		r = self.client.get(self.URIs['MIS'])
+		return r.json()
+
+
