@@ -36,7 +36,7 @@ from daemon import Daemon
 #
 #==================================
 @Singleton
-class Mission(Daemon):
+class Mission():
 	def __init__(self, hst, prt, usr, pss, location="./daemons/mission.pid"):
 
 		# Call super constructor for the Daemon Meta Class
@@ -90,14 +90,6 @@ class Mission(Daemon):
 			self.util.errLog("Connection error with competition server - Are you sure the Server is Running?")
 			self.logged_in = False
 
-
-        #=====================
-        #
-	# Starts the daemon process
-	#
-        #=====================
-        def run(self):
-		self.populateMissionComponents()
 
 	#==================
 	#
