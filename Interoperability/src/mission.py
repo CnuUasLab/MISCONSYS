@@ -34,7 +34,7 @@ import interop
 #==================================
 @Singleton
 class Mission():
-	def __init__(self, hst, prt, usr, pss):
+	def __init__(self, hst="http://0.0.0.0", prt="8000", usr="testuser", pss="testpass"):
 
 		self.util = Utils()
 
