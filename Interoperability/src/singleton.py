@@ -21,11 +21,11 @@ def Singleton(c):
 
     __Instances__ = {}
 
-    def getInstance():
+    def getInstance(*args):
         """ Static access method for the current instance """
         
         if (c not in __Instances__):
-            __Instances__[c] = c()
+            __Instances__[c] = c(*args)
         return __Instances__[c]
     
     return getInstance

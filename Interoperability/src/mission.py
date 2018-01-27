@@ -13,16 +13,13 @@ import sys
 import requests
 import re
 
+from multiprocessing import Process
 from utils import Utils
 from singleton import Singleton
 
 # Import interoperability client
 sys.path.insert(0, "../interop/client/")
 import interop
-
-# Import daemon library
-sys.path.insert(0, "../daemon_py/")
-from daemon import Daemon
 
 #==================================
 #
@@ -37,10 +34,7 @@ from daemon import Daemon
 #==================================
 @Singleton
 class Mission():
-	def __init__(self, hst, prt, usr, pss, location="./daemons/mission.pid"):
-
-		# Call super constructor for the Daemon Meta Class
-		super(Mission, self).__init__(location)
+	def __init__(self, hst, prt, usr, pss):
 
 		self.util = Utils()
 
@@ -75,7 +69,7 @@ class Mission():
 			                self.client = interop.Client( url=self.host+":"+self.port,
 							              username=self.username,
 							              password=self.password
-				        )
+				                                    )
                                         self.logged_in = True
                                 except requests.ReadTimeout:
                                         self.logged_in = False
@@ -84,12 +78,38 @@ class Mission():
                         #self.logged_in = True
 			self.util.succLog("Successfully logged into competition server.")
 
+			self.util.log("Starting the multiprocessor function.")
+			self.proc = Process(target=self.populateMissionComponents, args=())
+			self.util.succLog("Successfully initiated multiproc function.")
+
 		except interop.exceptions.InteropError:
 			self.util.errLog("ERROR: Invalid login to competition server.")
 		except requests.exceptions.ConnectionError:
 			self.util.errLog("Connection error with competition server - Are you sure the Server is Running?")
 			self.logged_in = False
 
+
+	#==================
+	#    Start the background process that runs
+	#    the mission synchronization
+	#==================
+	def startProcess(self):
+		self.proc.start()
+
+	#==================
+	#    Stop the background process that runs
+	#    the mission synchronization.
+	#==================
+	def stopProcess(self):
+		self.proc.stop()
+
+
+	#==================
+	# Retrieve the process object
+	#   that populates mission components
+	#==================
+	def getProcess(self):
+		return self.proc
 
 	#==================
 	#
