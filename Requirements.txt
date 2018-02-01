@@ -1,3 +1,13 @@
 pytest
+<<<<<<< HEAD
 requests
 futures
+Django==1.9.4
+gunicorn==19.6.0
+futures
+=======
+Django==1.9.4
+gunicorn==19.6.0
+futures
+
+>>>>>>> 2a47976c14d9335d85bd8a080b7c0decb3488770
