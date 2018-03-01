@@ -59,3 +59,6 @@ typings/
 
 # I don't want compilation files
 *.pyc
+
+# I don't want emacs backup files
+*~
