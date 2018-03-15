@@ -34,8 +34,10 @@ import interop
 #==================================
 @Singleton
 class Mission():
-	def __init__(self, hst="http://0.0.0.0", prt="8000", usr="testuser", pss="testpass"):
 
+	def __init__(self, hst="http://0.0.0.0", prt="8000", usr="testuser", pss="testpass"):
+		global tel_List = []
+		global request_List = []
 		self.util = Utils()
 
 		self.host = hst
@@ -247,9 +249,9 @@ class Mission():
         #========================
         def postTelemetryHelper(self, pTel):
                 if (self.isLoggedIn()):
-                        self.client.post_telemetry(telemetry)
+                    	self.storeTelemetry(pTel)
                         self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
-                                                                
+						self.storeRequest(self.mission_components['STI'])
                 
 
 	#=====================
@@ -307,7 +309,7 @@ class Mission():
         # Conducts a consecutive start of all daemons
         #
         #==========================
-        def startDaemons(self):
+    def startDaemons(self):
                 self.mission_daemon.start()
 
         #==========================
@@ -315,5 +317,27 @@ class Mission():
         # Conducts a consecutive stop of all daemons
         #
         #==========================
-        def stopDaemon(self):
-                self.mission_daemon.stop()
+    def stopDaemon(self):
+        self.mission_daemon.stop()
+
+		# ==========================
+		#
+		# stores telemetry in buffer
+		#
+		# ==========================
+	def storeTelemetry(self,tel_Packet):
+		tel_List.append(tel_Packet)
+
+		# ==========================
+		#
+		# submits all telemetry stored in buffer to server, then deletes contents
+		#
+		# ==========================
+	def submitTelemetryToServer(self):
+
+		for x in tel_List:
+			self.client.post_telemetry(x)
+		del tel_List
+
+	def storeRequest(self,req):
+		request_List.append(req)
