@@ -4,3 +4,14 @@ futures==3.2.0
 Django==1.11.10
 Pillow==2.4.0
 pymavlink==2.2.8
+
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
+click==6.7.*
+flask==1.0.2
+itsdangerous==0.24.0
+
+flask-socketio==3.0.0
+python-engineio==2.1.0
+python-socketio==1.9.0
