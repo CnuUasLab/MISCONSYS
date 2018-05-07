@@ -3,3 +3,4 @@ requests==2.18.4
 futures==3.2.0
 Django==1.11.10
 Pillow==2.4.0
+pymavlink==2.2.8
