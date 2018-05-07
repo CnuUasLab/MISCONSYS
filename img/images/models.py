@@ -23,9 +23,13 @@ from django.db import models
 #    - latitude: latitude that the image was taken at.
 #-------------------------
 class Image(models.Model):
-    img_path = models.CharField(max_length=50)
-    lon      = models.DecimalField(max_digits=9, decimal_places=6)
-    lat      = models.DecimalField(max_digits=9, decimal_places=6)
+    img_photo = models.ImageField(default="default.img", 
+                                  blank=True, null=True, upload_to="images/unprocessed_%Y%m%d%H%M%S")
+    
+    img_path  = models.CharField(max_length=50)
+    
+    lon       = models.DecimalField(max_digits=9, decimal_places=6)
+    lat       = models.DecimalField(max_digits=9, decimal_places=6)
 
 
 
