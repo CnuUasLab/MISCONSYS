@@ -30,20 +30,12 @@ try:
 except IOError:
 	util.errLog("WARNING: Config file not found!")
 	util.errLog("Aborting operation! Make sure config.json exists in the /src directory.")
-	util.errLog("I'm angry so I'm going to dump everything into dumpFile.txt now! GoodBye!!!")
-#	util.dump() - > Being developed.
 	sys.exit(0)
 
 # Start Telemetry module to load data into.
 telemetry = {}
 
 util.succLog("Setting up mavlink recieving protocol - Instantiating modules...")
-
-#try:
-#        imgr = IMGClient("localhost", "cnuuas", "N0Ax1s")
-#        util.succLog("Connection to IMG Server - Successful")
-#except socket.gaierror:
-#        util.errLog("ERR: No Access to the IMGClient FTP Server")
 
 # Instantiate a Mavlink module.
 mavl = Mavlink(
@@ -85,46 +77,44 @@ def postTelem(telemetry):
 
 
 while True:
-	try:
-        	udpPacket = mavl.getMavPacket()
-        	lonLatPacket = " "
-        	if(udpPacket != None):
+    try:
+        udpPacket = mavl.getMavPacket()
+        lonLatPacket = " "
+        if(udpPacket != None):
+            if (udpPacket.get_type() == "GLOBAL_POSITION_INT"):
+                telemPacket = udpPacket
+                
+                # populate the coordinate elements of the telemetry module
+                telemetry['longitude'] = float(telemPacket.lon)/10000000
+                telemetry['latitude'] = float(telemPacket.lat)/10000000
+                telemetry['heading'] = float(telemPacket.hdg)/1000
+                telemetry['altitude'] = float(telemPacket.alt)/10000
 
-                	if (udpPacket.get_type() == "GLOBAL_POSITION_INT"):
-	                       	telemPacket = udpPacket
+                # print telemetry
+                print miss.getSystemTime()
 
-				# populate the longitude element of the telemetry module
-				telemetry['longitude'] = float(telemPacket.lon)/10000000
-				telemetry['latitude'] = float(telemPacket.lat)/10000000
-				telemetry['heading'] = float(telemPacket.hdg)/1000
-				telemetry['altitude'] = float(telemPacket.alt)/10000
+                if (miss.isLoggedIn()):
+                    # thread.start_new_thread(postTelem, (telemetry,))
+                    postTelem(telemetry)
 
-#				print telemetry
-                                print miss.getSystemTime()
-                                
-				if (miss.isLoggedIn()):
-#					thread.start_new_thread(postTelem, (telemetry,))
-					postTelem(telemetry)
-#					print telemetry
+            # print telemetry
+            if missPacket != None:
+                print missPacket
 
-		if missPacket != None:
-			pass
-#			print missPacket
-		missPacket = miss.getMissionComponents()
+            missPacket = miss.getMissionComponents()
+            # Recalculate the number of seconds elapsed
+            
+            elapsed = time.time() - startTime
+            # If one second has elapsed reset the clock and print the frequency.
+            if elapsed >= 1:
+                global packets_sent
+                telemetry['frequency'] = packets_sent
 
-		# Recalculate the number of seconds elapsed
-		elapsed = time.time() - startTime
+                # print telemetry['frequency']
+                startTime = time.time()
+                packets_sent = 0
 
-		# If one second has elapsed reset the clock and print the frequency.
-		if elapsed >= 1:
-			global packets_sent
-			telemetry['frequency'] = packets_sent
-#			print telemetry['frequency']
-
-			startTime = time.time()
-			packets_sent = 0
-
-	except KeyboardInterrupt:
-		break
-        except sys.stderr:
-                util.errLog("ERR: Exit main on sys call. Terminating Sys call.")
+    except KeyboardInterrupt:
+        break
+    except sys.stderr:
+        util.errLog("ERR: Exit main on sys call. Terminating Sys call.")
