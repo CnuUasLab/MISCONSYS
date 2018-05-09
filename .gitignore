@@ -62,3 +62,6 @@ typings/
 
 # I don't want emacs backup files
 *~
+
+# eliminate the config file to protect people's passwords for their versions of the competition server.
+*config.json
