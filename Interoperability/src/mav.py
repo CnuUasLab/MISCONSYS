@@ -1,21 +1,23 @@
-#===============================================================#
-#								#
-#			Mavlink Library				#
-#								#
-#			Author: davidkroell    			#
-#			Version: 2016-10-03			#
-#								#
-#	     This is the mavlink library that is used		#
+#===========================================================#
+#                                                           #
+#                      Mavlink Library                      #
+#                                                           #
+#                    Author: davidkroell                    #
+#                    Version: 2017-11-16                    #
+#                                                           #
+#	     This is the mavlink library that is used		    #
 #	  to send and recieve mavlink data from/to the plane.	#
-#								#
-#===============================================================#
+#                                                           #
+#===========================================================#
 
 from pymavlink import mavutil
-from utils import Utils
+from utils import Utils, Queue
+from multiprocessing import Process
 
 import json
 import socket
 import thread
+import traceback
 
 #====================
 # Mavlink module class. Creates new instance of Mavlink Module
@@ -27,7 +29,7 @@ class Mavlink():
     def __init__(self, ip, port):
         self.util = Utils()
 
-	self.target_ip   = ip
+        self.target_ip   = ip
         self.target_port = port
 
         self.new_packet = False
@@ -35,23 +37,29 @@ class Mavlink():
 
         self.util.log("Starting mavudp session on - "+str(self.target_ip)+":"+str(self.target_port))
         self.mav = mavutil.mavudp(str(self.target_ip)+":"+str(self.target_port), input=True)
-
-        thread.start_new_thread(self.startUDPStream, ())
+        
+        self.MavBuffer = Queue()
+        
+        # thread.start_new_thread(self.startUDPStream, ())
+        self.procMav = Process(target=self.startUDPStream, args=())
 
     # Function called in the thread to constantly update packets.
     def startUDPStream(self):
         while True:
-            #	statusPacket = mav.recv()
-            status = self.mav.recv_msg()
-            if(status!=None and not(self.new_packet)):
-                self.new_packet = True
-		self.current_packet = status
+            try:
+                #statusPacket = mav.recv()
+                status = self.mav.recv_msg()
+                if (status != None):
+                    self.MavBuffer.push(status)
+            except:
+                self.util.errLog("UDP Stream Error Occured.")
+                traceback.print_exc()
+                
 
     # Accessor, to get the current packet
     def getMavPacket(self):
-        if(self.new_packet):
-            self.new_packet = False
-            return self.current_packet
+        if(not(self.MavBuffer.isEmpty())):
+            return self.MavBuffer.pop()
         else:
             return None
 
