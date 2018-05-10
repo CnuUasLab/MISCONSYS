@@ -1,8 +1,9 @@
 #============================================#
-#
-#		Mission Handler
-#	    Author: davidkroell
-#
+#                 Mission Handler            #
+#	            Author: davidkroell          #
+#                                            #
+#               version: 2017-12-28          #
+#                                            #
 #============================================#
 
 import sys
@@ -10,35 +11,11 @@ import requests
 import thread
 import re
 
-from utils import Utils
+from utils import Utils, Queue
 from multiprocessing import Process
 
 sys.path.insert(0, "../interop/client/")
 import interop
-
-#==================================
-#  Telemetry Queue to handel the
-#  continuous posting process.
-#==================================
-class Telemetry_Queue():
-    "A container with a first-in-first-out (FIFO) queuing policy."
-    def __init__(self):
-        self.list = []
-
-    def push(self,item):
-        "Enqueue the 'item' into the queue"
-        self.list.insert(0,item)
-
-    def pop(self):
-        """
-          Dequeue the earliest enqueued item still in the queue. This
-          operation removes the item from the queue.
-        """
-        return self.list.pop()
-
-    def isEmpty(self):
-        "Returns true if the queue is empty"
-        return len(self.list) == 0
 
 #==================================
 #
@@ -73,7 +50,8 @@ class Mission():
         self.mission_components['STI'] = {}
         self.mission_components['TAR'] = {}
         self.mission_components['FLZ'] = {}
-        self.telemetry_buffer = Telemetry_Queue()
+
+        self.telemetry_buffer = Queue()
         self.sysTime = None
         
         self.username = usr
@@ -94,11 +72,11 @@ class Mission():
             self.util.succLog("Successfully logged into competition server.")
 
             self.util.log("Starting the mission components process.")
-            self.proc = Process(target=self.populateMissionComponents, args=())
+            self.procMiss = Process(target=self.populateMissionComponents, args=())
             self.util.succLog("Successfully initiated multiproc mission components.")
             
             self.util.log("Starting the telemetry handeler function.")
-            self.proc = Process(target=self.postTelemetryHandeler, args=())
+            self.procTelem = Process(target=self.postTelemetryHandeler, args=())
             self.util.succLog("Successfully initiated multiproc telemetry handeler.")
 
         except interop.exceptions.InteropError:

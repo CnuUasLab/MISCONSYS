@@ -3,7 +3,7 @@
 # Main class for handeling Interoperability operations. #
 #                                                       #
 #                Author: davidkroell                    #
-#                  Version: 0.0.1                       #
+#                  Version: 2.5.2                       #
 #=======================================================#
 
 from mav import Mavlink
@@ -67,6 +67,7 @@ def postTelem(telemetry):
         global packets_sent
 
         # post telemetry to the Competition server.
+        print telemetry
         miss.postTelemetry(
                 telemetry['latitude'],
                 telemetry['longitude'],
