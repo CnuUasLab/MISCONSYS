@@ -2,6 +2,7 @@
 from PIL import Image
 import pandas as pd
 import math
+import glob, os
 
 class Img_Handler:
 	'api for cropping photos'
@@ -43,6 +44,10 @@ class Img_Handler:
 				# append the data to a file
 				fileName = imgName[:imgName.rfind('.')] + ".txt"
 				self.imgData.save(latLon, fileName)
+
+	def cropAll(self):
+		for file in glob.glob(self.pullDir + "*.jpg"):
+			self.cropSingle(file[file.rfind('/'):])
 
 
 class Img_Obj:
@@ -141,4 +146,5 @@ class Img_Data:
 
 ih = Img_Handler("./sample-data/", "./generated-images/", _size=500, _offset=-250)
 
-ih.cropSingle("sample.jpg")
+#ih.cropSingle("sample.jpg")
+ih.cropAll()
