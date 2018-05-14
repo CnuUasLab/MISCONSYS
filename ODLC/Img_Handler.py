@@ -107,7 +107,7 @@ class Img_Data:
 	def calcLatLon(self, latLonAltYaw, xMin, yMin, subSize, origXY):
 		# passed in blank data
 		if(latLonAltYaw is None):
-			return None
+			return (0.0,0.0)
 
 		# parse the tuple to vars
 		lat = latLonAltYaw[0]
