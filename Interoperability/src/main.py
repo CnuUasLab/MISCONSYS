@@ -82,6 +82,7 @@ while True:
         udpPacket = mavl.getMavPacket()
         lonLatPacket = " "
         if(udpPacket != None):
+            print udpPacket
             if (udpPacket.get_type() == "GLOBAL_POSITION_INT"):
                 telemPacket = udpPacket
                 
@@ -119,3 +120,9 @@ while True:
         break
     except sys.stderr:
         util.errLog("ERR: Exit main on sys call. Terminating Sys call.")
+
+
+util.succLog("Joining three processes to disable multiprocessing.")
+miss.procMiss.join()
+miss.procTelem.join()
+mavl.procMav.join()

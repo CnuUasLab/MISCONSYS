@@ -1,15 +1,16 @@
-#============================================#
-#                 Mission Handler            #
-#	            Author: davidkroell          #
-#                                            #
-#               version: 2017-12-28          #
-#                                            #
-#============================================#
+#=========================================#
+#             Mission Handler             #
+#           Author: davidkroell           #
+#                                         #
+#           version: 2017-12-28           #
+#                                         #
+#=========================================#
 
 import sys
 import requests
 import thread
 import re
+import time
 
 from utils import Utils, Queue
 from multiprocessing import Process
@@ -73,12 +74,14 @@ class Mission():
 
             self.util.log("Starting the mission components process.")
             self.procMiss = Process(target=self.populateMissionComponents, args=())
+            self.procMiss.start()
             self.util.succLog("Successfully initiated multiproc mission components.")
             
             self.util.log("Starting the telemetry handeler function.")
             self.procTelem = Process(target=self.postTelemetryHandeler, args=())
+            self.procTelem.start()
             self.util.succLog("Successfully initiated multiproc telemetry handeler.")
-
+            
         except interop.exceptions.InteropError:
             self.util.errLog("ERROR: Invalid login to competition server.")
         except requests.exceptions.ConnectionError:
@@ -95,22 +98,27 @@ class Mission():
 	#==================
     def populateMissionComponents(self):
         while True:
-            if not self.componentsAvailable:
+            try:
                 mission_data = self.getMissionData()[0]
                 obstacle_data = self.getObstacles()
 
-				# Update mission components
+                # Update mission components
                 self.mission_components['WYP'] = mission_data['mission_waypoints']
                 self.mission_components['FLZ'] = mission_data['fly_zones']
 
                 self.mission_components['TAR']['emergent_lastKnown'] = mission_data['emergent_last_known_pos']
-                
-                self.mission_components['TAR']['off_axis'] = mission_data['off_axis_target_pos']
-                
+    
+                self.mission_components['TAR']['off_axis'] = mission_data['off_axis_odlc_pos']    
                 self.mission_components['TAR']['air_drop'] = mission_data['air_drop_pos']
 
                 self.mission_components['OBS'] = obstacle_data
-                self.componentsAvailable = True
+
+            except KeyError:
+                self.util.errLog("Key Error associated with mission data. Is mission Data being populated?")
+                time.sleep(4)
+            except KeyboardInterrupt:
+                self.util.errLog("Handelling keyboard interrupt: PROGRAM TERMINATE.")
+                sys.exit(0)
 
 	#========================
 	#
@@ -216,11 +224,14 @@ class Mission():
     #=======================
     def postTelemetryHandeler(self):
         while(True):
-            if(not(self.telemetry_buffer.isEmpty())):
-                mTelem = self.telemetry_buffer.pop()
-                self.client.post_telemetry(mTelem)
-                self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
-            
+            try:
+                if(not(self.telemetry_buffer.isEmpty())):
+                    mTelem = self.telemetry_buffer.pop()
+                    self.client.post_telemetry(mTelem)
+                    self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
+            except KeyboardInterrupt:
+                self.util.errLog("Executing keyboard interupt program: TERMINATE")
+                sys.exit(0)
 
 	#=====================
 	# Get the system time.
