@@ -3,10 +3,10 @@
 #                      Mavlink Library                      #
 #                                                           #
 #                    Author: davidkroell                    #
-#                    Version: 2017-11-16                    #
+#                    Version: 2018-02-13                    #
 #                                                           #
-#	     This is the mavlink library that is used		    #
-#	  to send and recieve mavlink data from/to the plane.	#
+#         This is the mavlink library that is used	    #
+#    to send and recieve mavlink data from/to the plane.    #
 #                                                           #
 #===========================================================#
 
@@ -14,6 +14,7 @@ from pymavlink import mavutil
 from utils import Utils, Queue
 from multiprocessing import Process
 
+import sys
 import json
 import socket
 import thread
@@ -39,9 +40,11 @@ class Mavlink():
         self.mav = mavutil.mavudp(str(self.target_ip)+":"+str(self.target_port), input=True)
         
         self.MavBuffer = Queue()
-        
+
+        self.util.succLog("Starting Mavlink process")
         # thread.start_new_thread(self.startUDPStream, ())
         self.procMav = Process(target=self.startUDPStream, args=())
+        self.procMav.start()
 
     # Function called in the thread to constantly update packets.
     def startUDPStream(self):
@@ -51,6 +54,12 @@ class Mavlink():
                 status = self.mav.recv_msg()
                 if (status != None):
                     self.MavBuffer.push(status)
+                    print "MavBuffer is empty: ", self.MavBuffer.isEmpty()
+
+            except KeyboardInterrupt:
+                self.util.errLog("Keyboard interrupt: UDP stream termination in progress...")
+                sys.exit(0)
+                
             except:
                 self.util.errLog("UDP Stream Error Occured.")
                 traceback.print_exc()
@@ -59,7 +68,8 @@ class Mavlink():
     # Accessor, to get the current packet
     def getMavPacket(self):
         if(not(self.MavBuffer.isEmpty())):
-            return self.MavBuffer.pop()
+            packet = self.MavBuffer.pop()
+            return packet
         else:
             return None
 
