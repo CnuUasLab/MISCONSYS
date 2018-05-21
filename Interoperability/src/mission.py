@@ -45,7 +45,7 @@ class Mission():
         self.componentsAvailable = False
 
         self.mission_components = {}
-
+        
         self.mission_components['OBS'] = {}
         self.mission_components['WYP'] = {}
         self.mission_components['STI'] = {}
@@ -71,9 +71,10 @@ class Mission():
 
             #self.logged_in = True
             self.util.succLog("Successfully logged into competition server.")
-
+            self.populateStaticMissionComponents()
+            
             self.util.log("Starting the mission components process.")
-            self.procMiss = Process(target=self.populateMissionComponents, args=())
+            self.procMiss = Process(target=self.populateObstacleComponents, args=())
             self.procMiss.start()
             self.util.succLog("Successfully initiated multiproc mission components.")
             
@@ -96,21 +97,10 @@ class Mission():
 	# Serves the purpose of synchronizing with mavlink thread module.
 	#
 	#==================
-    def populateMissionComponents(self):
-        print self.client
+    def populateObstacleComponents(self):
         while True:
             try:
-                mission_data = self.getMissionData()[0]
                 obstacle_data = self.getObstacles()
-
-                # Update mission components
-                self.mission_components['WYP'] = mission_data['mission_waypoints']
-                self.mission_components['FLZ'] = mission_data['fly_zones']
-
-                self.mission_components['TAR']['emergent_lastKnown'] = mission_data['emergent_last_known_pos']
-    
-                self.mission_components['TAR']['off_axis'] = mission_data['off_axis_odlc_pos']    
-                self.mission_components['TAR']['air_drop'] = mission_data['air_drop_pos']
 
                 self.mission_components['OBS'] = obstacle_data
 
@@ -121,33 +111,59 @@ class Mission():
                 self.util.errLog("Handelling keyboard interrupt: PROGRAM TERMINATE.")
                 sys.exit(0)
 
-	#========================
-	#
-	# Retrieves mission components from the mission class.
-	# Triggers condition variable to allow for a new set to be retrieved.
-	#
-	#========================
+
+    #=============================
+    #
+    # Populates the static mission components
+    # for HTTP broadcast
+    #
+    #=============================
+    def populateStaticMissionComponents(self):
+        self.util.log("Attempting to attain static mission data")
+        mission_data = self.getMissionData()[0]
+        print mission_data
+        
+        self.mission_components['WYP'] = mission_data['mission_waypoints']
+        self.mission_components['FLZ'] = mission_data['fly_zones']
+        self.mission_components['TAR']['emergent_lastKnown'] = mission_data['emergent_last_known_pos']
+        self.mission_components['TAR']['off_axis'] = mission_data['off_axis_odlc_pos']
+        self.mission_components['TAR']['air_drop'] = mission_data['air_drop_pos']
+        self.util.succLog("Successfully obtained and stored mission data.")
+                                                                        
+    #========================
+    #
+    # Retrieves mission components from the mission class.
+    # Triggers condition variable to allow for a new set to be retrieved.
+    #
+    #========================
     def getMissionComponents(self):
         return self.mission_components
 
-	#===================
-	#
-	# Returns whether we're logged
-	# into the competition server or not.
-	#
-	#===================
+    #===================
+    #
+    # Returns whether we're logged
+    # into the competition server or not.
+    #
+    #===================
     def isLoggedIn(self):
         return self.logged_in
 
-	#====================
-	#
-	# Grabs obstacle data from
-	# interop server.
-	#
-	#====================
+    #====================
+    #
+    # Grabs obstacle data from
+    # interop server.
+    #
+    #====================
     def getObstacles(self):
-        r = self.client.get(self.URIs['OBS'])
+        r = self.getClientObj().get(self.URIs['OBS'])
         return r.json()
+
+    #===========================
+    # Retrieves the client object for the
+    # interoperability server.
+    #===========================
+    def getClientObj(self):
+        return self.client
 
     #=================================================
     # Post a target to the server that may
@@ -271,11 +287,12 @@ class Mission():
             image_data = f.read()
             self.client.put_target_image(target.id, image_data)
 
-	#==========================
-	#
-	# Retrieve the mission data for the competition.
-	#
-	#==========================
+
+    #==========================
+    #
+    # Retrieve the mission data for the competition.
+    #
+    #==========================
     def getMissionData(self):
         r = self.client.get(self.URIs['MIS'])
         return r.json()
