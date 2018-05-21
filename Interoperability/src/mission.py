@@ -12,8 +12,8 @@ import thread
 import re
 import time
 
-from utils import Utils, Queue
-from multiprocessing import Process
+from utils import Utils
+from multiprocessing import Process, Queue
 
 sys.path.insert(0, "../interop/client/")
 import interop
@@ -97,6 +97,7 @@ class Mission():
 	#
 	#==================
     def populateMissionComponents(self):
+        print self.client
         while True:
             try:
                 mission_data = self.getMissionData()[0]
@@ -127,9 +128,7 @@ class Mission():
 	#
 	#========================
     def getMissionComponents(self):
-        if self.componentsAvailable:
-            self.componentsAvailable = False
-            return self.mission_components
+        return self.mission_components
 
 	#===================
 	#
@@ -215,7 +214,7 @@ class Mission():
                               			uas_heading=hdg
 						)
 		
-        self.telemetry_buffer.push(telemetry)
+        self.telemetry_buffer.put(telemetry)
         
     #=======================
     # Handeler for pulling necessary
@@ -225,8 +224,8 @@ class Mission():
     def postTelemetryHandeler(self):
         while(True):
             try:
-                if(not(self.telemetry_buffer.isEmpty())):
-                    mTelem = self.telemetry_buffer.pop()
+                if(not(self.telemetry_buffer.empty())):
+                    mTelem = self.telemetry_buffer.get()
                     self.client.post_telemetry(mTelem)
                     self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
             except KeyboardInterrupt:
