@@ -11,8 +11,8 @@
 #===========================================================#
 
 from pymavlink import mavutil
-from utils import Utils, Queue
-from multiprocessing import Process
+from utils import Utils
+from multiprocessing import Process, Queue
 
 import sys
 import json
@@ -53,8 +53,7 @@ class Mavlink():
                 #statusPacket = mav.recv()
                 status = self.mav.recv_msg()
                 if (status != None):
-                    self.MavBuffer.push(status)
-                    print "MavBuffer is empty: ", self.MavBuffer.isEmpty()
+                    self.MavBuffer.put(status)
 
             except KeyboardInterrupt:
                 self.util.errLog("Keyboard interrupt: UDP stream termination in progress...")
@@ -67,8 +66,8 @@ class Mavlink():
 
     # Accessor, to get the current packet
     def getMavPacket(self):
-        if(not(self.MavBuffer.isEmpty())):
-            packet = self.MavBuffer.pop()
+        if(not(self.MavBuffer.empty())):
+            packet = self.MavBuffer.get()
             return packet
         else:
             return None

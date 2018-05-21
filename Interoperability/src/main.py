@@ -82,7 +82,6 @@ while True:
         udpPacket = mavl.getMavPacket()
         lonLatPacket = " "
         if(udpPacket != None):
-            print udpPacket
             if (udpPacket.get_type() == "GLOBAL_POSITION_INT"):
                 telemPacket = udpPacket
                 
@@ -93,15 +92,15 @@ while True:
                 telemetry['altitude'] = float(telemPacket.alt)/10000
 
                 # print telemetry
-                print miss.getSystemTime()
+                #print miss.getSystemTime()
 
                 if (miss.isLoggedIn()):
                     # thread.start_new_thread(postTelem, (telemetry,))
                     postTelem(telemetry)
 
             # print telemetry
-            if missPacket != None:
-                print missPacket
+            #if missPacket != None:
+            #    print missPacket
 
             missPacket = miss.getMissionComponents()
             # Recalculate the number of seconds elapsed
