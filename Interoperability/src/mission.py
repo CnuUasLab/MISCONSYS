@@ -74,13 +74,15 @@ class Mission():
             self.populateStaticMissionComponents()
             
             self.util.log("Starting the mission components process.")
-            self.procMiss = Process(target=self.populateObstacleComponents, args=())
-            self.procMiss.start()
+            #self.procMiss = Process(target=self.populateObstacleComponents, args=())
+            #self.procMiss.start()
+            thread.start_new_thread(self.populateObstacleComponents, ())
             self.util.succLog("Successfully initiated multiproc mission components.")
             
             self.util.log("Starting the telemetry handeler function.")
-            self.procTelem = Process(target=self.postTelemetryHandeler, args=())
-            self.procTelem.start()
+            #self.procTelem = Process(target=self.postTelemetryHandeler, args=())
+            #self.procTelem.start()
+            thread.start_new_thread(self.postTelemetryHandeler, ())
             self.util.succLog("Successfully initiated multiproc telemetry handeler.")
             
         except interop.exceptions.InteropError:
@@ -121,7 +123,6 @@ class Mission():
     def populateStaticMissionComponents(self):
         self.util.log("Attempting to attain static mission data")
         mission_data = self.getMissionData()[0]
-        print mission_data
         
         self.mission_components['WYP'] = mission_data['mission_waypoints']
         self.mission_components['FLZ'] = mission_data['fly_zones']
@@ -243,7 +244,7 @@ class Mission():
                 if(not(self.telemetry_buffer.empty())):
                     mTelem = self.telemetry_buffer.get()
                     self.client.post_telemetry(mTelem)
-                    self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
+                    #self.mission_components['STI'] = self.client.get(self.URIs['TEL']).json()[len(self.client.get(self.URIs['TEL']).json())-1]['timestamp']
             except KeyboardInterrupt:
                 self.util.errLog("Executing keyboard interupt program: TERMINATE")
                 sys.exit(0)
