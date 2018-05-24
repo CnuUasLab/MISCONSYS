@@ -80,9 +80,9 @@ class Mission():
             self.util.succLog("Successfully initiated multiproc mission components.")
             
             self.util.log("Starting the telemetry handeler function.")
-            #self.procTelem = Process(target=self.postTelemetryHandeler, args=())
-            #self.procTelem.start()
-            thread.start_new_thread(self.postTelemetryHandeler, ())
+            self.procTelem = Process(target=self.postTelemetryHandeler, args=())
+            self.procTelem.start()
+            #thread.start_new_thread(self.postTelemetryHandeler, ())
             self.util.succLog("Successfully initiated multiproc telemetry handeler.")
             
         except interop.exceptions.InteropError:
@@ -112,6 +112,10 @@ class Mission():
             except KeyboardInterrupt:
                 self.util.errLog("Handelling keyboard interrupt: PROGRAM TERMINATE.")
                 sys.exit(0)
+            except requests.exceptions.ChunkedEncodingError:
+                self.util.errLog("[ Chunked Encoding Error Thrown ] - Resetting process.")
+            except ValueError:
+                self.util.errLog("[ Value Error Thrown ] - No decodable JSON Object.")
 
 
     #=============================
@@ -248,6 +252,10 @@ class Mission():
             except KeyboardInterrupt:
                 self.util.errLog("Executing keyboard interupt program: TERMINATE")
                 sys.exit(0)
+            except requests.exceptions.ConnectionError:
+                self.util.errLog("[ Connection Error Thrown ] - Resetting Telemetry Handeler Process.")
+            except requests.exceptions.ChunkedEncodingError:
+                self.util.errLog("[ Chunked Encoding Error Thrown ] - Resetting process.")
 
 	#=====================
 	# Get the system time.

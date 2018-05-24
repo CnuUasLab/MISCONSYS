@@ -67,7 +67,7 @@ def postTelem(telemetry):
         global packets_sent
 
         # post telemetry to the Competition server.
-        #print telemetry
+        print telemetry
         miss.postTelemetry(
                 telemetry['latitude'],
                 telemetry['longitude'],
@@ -123,5 +123,5 @@ while True:
 
 util.succLog("Joining three processes to disable multiprocessing.")
 #miss.procMiss.join()
-#miss.procTelem.join()
+miss.procTelem.join()
 mavl.procMav.join()
