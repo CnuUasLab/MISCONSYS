@@ -195,7 +195,7 @@ class Mission():
                        pBgColor, pAlphanumeric, pAlphanumericColor, pDescription,
                        pActionableOverride, pAutonomous=False, pTeamId="CNU_IMPRINT",
                        pImagePath=None):
-        imageAvailable = (pImagePath != None)
+        
         mTarget = interop.Target(id=pId, user=pUser, type=pType,
                                     latitutde=pLat, longitude=pLon,
                                     orientation=pOrient, shape=pShape,
@@ -203,21 +203,6 @@ class Mission():
                                     alphanumeric_color=pAlphanumericColor, description=pDescription,
                                     autonomous=pAutonomous, team_id=pTeamId,
                                     actionable_override=pActionableOverride)
-            
-        if(self.client.isLoggedIn()):
-            self.client.post_target(mTarget)
-            if(imageAvailable):
-                fileTypes = ['.jpg', '.png']
-                imagePathValid = False
-                for fileType in fileTypes:
-                    if(pImagePath.endswith(fileType)):
-                        imagePathValid = True
-                    if(imagePathValid):
-                        try:
-                            mImage = Image(pImagePath)
-                            self.client.post_target_image(pId, mImage)
-                        except IOException:
-                            self.util.err("ERROR: Error loading image file.")
                             
 	#========================
 	# Post telemetry to the server.
