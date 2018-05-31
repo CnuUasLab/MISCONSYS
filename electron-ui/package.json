@@ -1,0 +1,33 @@
+{
+  "name": "misconsys-frontend",
+  "version": "1.0.0",
+  "description": "The front end portion of the misconsys system being used.",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/CnuUasLab/MISCONSYS.git"
+  },
+  "keywords": [
+    "Front",
+    "End",
+    "Python",
+    "Javascript",
+    "Electron",
+    "Airplane",
+    "Ground",
+    "Station"
+  ],
+  "author": "davidkroell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CnuUasLab/MISCONSYS/issues"
+  },
+  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme",
+  "devDependencies": {
+    "angular": "1.7.0",
+    "electron": "2.0.2"
+  }
+}

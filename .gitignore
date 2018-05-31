@@ -65,3 +65,6 @@ typings/
 
 # eliminate the config file to protect people's passwords for their versions of the competition server.
 *config.json
+
+# eliminate node modules
+./electron-ui/node_modules/*
