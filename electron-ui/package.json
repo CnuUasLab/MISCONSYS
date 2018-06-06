@@ -25,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/CnuUasLab/MISCONSYS/issues"
   },
-  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme"
+  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme",
+  "devDependencies": {
+    "angular": "^1.6.10",
+    "electron": "^2.0.2",
+    "electron-prebuilt": "^1.4.13"
+  }
 }
