@@ -2,7 +2,7 @@
   "name": "misconsys-frontend",
   "version": "1.0.0",
   "description": "The front end portion of the misconsys system being used.",
-  "main": "main.js",
+  "main": "./main.js",
   "scripts": {
     "test": "npm start"
   },
@@ -25,9 +25,5 @@
   "bugs": {
     "url": "https://github.com/CnuUasLab/MISCONSYS/issues"
   },
-  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme",
-  "devDependencies": {
-    "angular": "1.7.0",
-    "electron": "2.0.2"
-  }
+  "homepage": "https://github.com/CnuUasLab/MISCONSYS#readme"
 }
