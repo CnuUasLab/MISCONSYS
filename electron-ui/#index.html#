@@ -15,7 +15,6 @@
 
     <!-- Dependencies for Application. -->
     <script src="./node_modules/angular/angular.min.js"></script>
-    <script src="./app.js"></script>
     
     
   </head>
