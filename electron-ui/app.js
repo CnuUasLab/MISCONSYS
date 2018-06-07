@@ -16,9 +16,16 @@ angular.module("MISCONSYS", ['ngRoute'])
 
     .config(['$routeProvider', '$locationProvider',
 	     function($routeProvider, $locationProvider){
-		 $routeProvider
+
+	$routeProvider
 		 // Otherwise go to the root of the project.
-		     .otherwise({ redirectTo: '/'});
+		     .otherwise({ redirectTo: '/'})
+		 // When route for the intro home page.
+		     .when('./home', {
+			 templateUrl:'./home/home.html',
+			 controller: 'HomeController',
+			 css: './home/home.css'
+		     });
     }])
 
     .controller("AppController", function($scope) {

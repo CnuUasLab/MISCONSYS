@@ -34,10 +34,13 @@ app.on('ready', function() {
     });
 
     // Target HTML file that will be opened in Window
-    mainWindow.loadURL('file://' + __dirname + "./index.html");
+    mainWindow.loadURL('file://' + __dirname + "/index.html");
 
+    // Remove the default menu.
+    mainWindow.setMenu(null);
+    
     // Uncomment to use Chrome developer tools
-    // mainWindow.webContents.openDevTools({detach:true});
+    mainWindow.webContents.openDevTools({detach:true});
 
     // Cleanup when window is closed
     mainWindow.on('closed', function() {
