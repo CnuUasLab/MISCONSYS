@@ -34,8 +34,17 @@ except IOError:
 	util.errLog("Aborting operation! Make sure config.json exists in the /src directory.")
 	sys.exit(0)
 
+util.log("Attempting to Open Web API Sockets for Constant publication.")
+WebAppAPIPort = constants['web_api']['port']
+thread.start_new_thread(http_handeler.WebappAPIInit, (WebAppAPIPort,))
+util.succLog("Started Web API for Interoperability Constants")
+
 # Start Telemetry module to load data into.
 telemetry = {}
+
+# initialize the constants instance so that we can update the WebAPI
+util.log("Accessing HTTPConst singleton instance")
+HTTPConst = HTTPConstants()
 
 util.succLog("Setting up mavlink recieving protocol - Instantiating modules...")
 
@@ -65,9 +74,6 @@ startTime = time.time()
 util.log("Initiating telemetry status console front end")
 
 util.log("Ready to recieve Mavlink Packets...")
-
-# initialize the constants instance so that we can update the WebAPI
-HTTPConst = HTTPConstants()
 
 packets_sent = 0
 def postTelem(telemetry):
