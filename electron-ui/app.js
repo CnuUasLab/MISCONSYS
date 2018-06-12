@@ -1,4 +1,3 @@
-
 /*
 
  *****************************************
@@ -19,13 +18,7 @@ angular.module("MISCONSYS", ['ngRoute'])
 
 	$routeProvider
 		 // Otherwise go to the root of the project.
-		     .otherwise({ redirectTo: '/'})
-		 // When route for the intro home page.
-		     .when('./home', {
-			 templateUrl:'./home/home.html',
-			 controller: 'HomeController',
-			 css: './home/home.css'
-		     });
+		     .otherwise({ redirectTo: '/'});
     }])
 
     .controller("AppController", function($scope) {
@@ -39,7 +32,6 @@ angular.module("MISCONSYS", ['ngRoute'])
 	// and data-binded to the view. This secures the code. If you use
 	// $scope in AngularJS, you should be ashamed of yourself and read
 	// johnpapa's article on AngularJS Controller As and the vm Variable.
-
 	
     });
 

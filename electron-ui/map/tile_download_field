@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl "http://c.tile.openstreetmap.org/18/752[51-54]/1023[45-48].png" -o "tiles/18/752#1/1023#2.png" --create-dirs

@@ -11,7 +11,9 @@ from mission import Mission
 from utils import Utils
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+from http_handeler import HTTPConstants
 
+import http_handeler
 import sys
 import socket
 import thread
@@ -54,6 +56,8 @@ miss = Mission(
 # Grab mission/server data from the competition server.
 missPacket = miss.getMissionComponents()
 
+HTTPConst.setMission(missPacket)
+
 packets_sent = 0
 startTime = time.time()
 
@@ -61,6 +65,9 @@ startTime = time.time()
 util.log("Initiating telemetry status console front end")
 
 util.log("Ready to recieve Mavlink Packets...")
+
+# initialize the constants instance so that we can update the WebAPI
+HTTPConst = HTTPConstants()
 
 packets_sent = 0
 def postTelem(telemetry):
@@ -94,6 +101,9 @@ while True:
                 # print telemetry
                 #print miss.getSystemTime()
 
+                # Update the Web API Constants
+                HTTPConst.setTelemetry(telemetry)
+                
                 if (miss.isLoggedIn()):
                     # thread.start_new_thread(postTelem, (telemetry,))
                     postTelem(telemetry)
@@ -102,10 +112,15 @@ while True:
             #if missPacket != None:
             #    print missPacket
 
+            # Get the mission components
             missPacket = miss.getMissionComponents()
-            # Recalculate the number of seconds elapsed
+
+            # set the components in the Web API Constants
+            HTTPConst.setMission(missPacket)
             
+            # Recalculate the number of seconds elapsed
             elapsed = time.time() - startTime
+            
             # If one second has elapsed reset the clock and print the frequency.
             if elapsed >= 1:
                 global packets_sent

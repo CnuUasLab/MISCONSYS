@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Download tiles for the flight field where we fly the plane.
+
+curl "http://c.tile.openstreetmap.org/16/188[35-50]/254[67-87].png" -o "tiles/16/188#1/254#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/17/376[75-99]/509[30-80].png" -o "tiles/17/376#1/509#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/18/753[50-99]/1019[00-40].png" -o "tiles/18/753#1/1019#2.png" --create-dirs
+

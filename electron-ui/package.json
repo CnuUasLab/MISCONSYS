@@ -30,5 +30,13 @@
     "angular": "^1.6.10",
     "electron": "^2.0.2",
     "electron-prebuilt": "^1.4.13"
+  },
+  "dependencies": {
+    "angular-route": "^1.6.10",
+    "bootstrap": "^4.1.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^1.9.1",
+    "popper.js": "^1.14.3",
+    "remote": "^0.2.6"
   }
 }
