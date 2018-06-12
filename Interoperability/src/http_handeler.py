@@ -64,7 +64,7 @@ class HTTPConstants():
 
 # Initialization of the Web Application.
 # Utilizes the Singleton instance of the HTTPConstants that it serves.
-def WebappAPIInit():
+def WebappAPIInit(pPort):
 	app = flask.Flask(__name__)
 	app.config["DEBUG"] = True
 	const = HTTPConstants()
@@ -80,7 +80,7 @@ def WebappAPIInit():
 		#const = HTTPConstants()
 		return jsonify(const.getTelemetry())
 	
-	@app.route('/api/v1/resources/mission', methods=['GET'])
+	@app.route('/api/v1/mission', methods=['GET'])
 	def api_mission():
 		#const = HTTPConstants()
 		return jsonify(const.getMission())
@@ -95,7 +95,7 @@ def WebappAPIInit():
 		#const = HTTPConstants()
 		return jsonify(const.getObsticalMoving())
 
-	app.run()
+	app.run(host="0.0.0.0", port=pPort, debug=False, use_reloader=False)
 
 if __name__ == "__main__":
 	WebappAPIInit()
