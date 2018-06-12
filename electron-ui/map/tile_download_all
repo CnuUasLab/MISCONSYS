@@ -1,0 +1,44 @@
+#!/bin/bash
+# This script downloads Tiles into the map_app/tiles directory so that the plane can load tiles locally.
+
+# Downloading tiles for PAX River Naval Air Station
+
+curl "http://c.tile.openstreetmap.org/18/754[05-30]/1009[70-90].png" -o "tiles/18/754#1/1009#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/17/377[00-24]/504[80-99].png" -o "tiles/17/377#1/504#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/16/188[52-58]/252[42-49].png" -o "tiles/16/188#1/252#2.png" --create-dirs
+
+# Downloading tiles for use in SITL -- Australia Tiles
+
+curl "http://b.tile.openstreetmap.org/16/599[10-25]/396[45-65].png" -o "tiles/16/599#1/396#2.png" --create-dirs
+
+curl "http://a.tile.openstreetmap.org/17/1198[35-55]/793[08-28].png" -o "tiles/17/1198#1/793#2.png" --create-dirs
+
+curl "http://a.tile.openstreetmap.org/18/2396[65-99]/1586[28-63].png" -o "tiles/18/2396#1/1586#2.png" --create-dirs
+
+# Download tiles for the flight field where we fly the plane.
+
+curl "http://c.tile.openstreetmap.org/16/188[35-50]/254[67-87].png" -o "tiles/16/188#1/254#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/17/376[75-99]/509[30-80].png" -o "tiles/17/376#1/509#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/18/753[50-99]/1019[00-40].png" -o "tiles/18/753#1/1019#2.png" --create-dirs
+
+# Download tiles around CNU.
+
+curl "http://b.tile.openstreetmap.org/16/188[38-48]/254[89-97].png" -o "tiles/16/188#1/254#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/17/376[75-93]/509[78-95].png" -o "tiles/17/376#1/509#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/18/753[50-85]/1019[55-90].png" -o "tiles/17/753#1/1019#2.png" --create-dirs
+
+# Suffolk Flying Field
+
+curl "http://c.tile.openstreetmap.org/16/188[05-20]/255[75-90].png" -o "tiles/16/188#1/255#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/17/376[05-35]/511[55-90].png" -o "tiles/17/376#1/511#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/18/752[30-60]/1023[30-60].png" -o "tiles/18/752#1/1023#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/18/752[51-54]/1023[45-48].png" -o "tiles/18/752#1/1023#2.png" --create-dirs

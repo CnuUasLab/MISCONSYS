@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Suffolk Flying Field
+
+curl "http://c.tile.openstreetmap.org/16/188[05-20]/255[75-90].png" -o "tiles/16/188#1/255#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/17/376[05-35]/511[55-90].png" -o "tiles/17/376#1/511#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/18/752[30-60]/1023[30-60].png" -o "tiles/18/752#1/1023#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/18/752[51-54]/1023[45-48].png" -o "tiles/18/752#1/1023#2.png" --create-dirs
+

@@ -11,6 +11,7 @@
  */
 
 const electron = require('electron');
+//const remote = require('remote');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
@@ -28,8 +29,8 @@ app.on('ready', function() {
     // Create main window
     mainWindow = new BrowserWindow({
 	name:    "MISCONSYS",
-	width:   1400,
-	height:  750,
+	width:   1500,
+	height:  900,
 	toolbar: false
     });
 
@@ -38,12 +39,25 @@ app.on('ready', function() {
 
     // Remove the default menu.
     mainWindow.setMenu(null);
-    
+    mainWindow.setResizable(false);
+
     // Uncomment to use Chrome developer tools
-    mainWindow.webContents.openDevTools({detach:true});
+    mainWindow.webContents.openDevTools({mode : 'detach'});
 
     // Cleanup when window is closed
     mainWindow.on('closed', function() {
 	mainWindow = null
     });
+
+    // exit button functionality for the window.
+    /* mainWindow.webContents.executeJavaScript(`
+
+        document.getElementById("exit-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            window.close();
+        });
+
+    `); */
+
+
 });

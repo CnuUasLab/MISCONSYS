@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Downloading tiles for use in SITL -- Australia Tiles
+
+curl "http://b.tile.openstreetmap.org/16/599[10-25]/396[45-65].png" -o "tiles/16/599#1/396#2.png" --create-dirs
+
+curl "http://a.tile.openstreetmap.org/17/1198[35-55]/793[08-28].png" -o "tiles/17/1198#1/793#2.png" --create-dirs
+
+curl "http://a.tile.openstreetmap.org/18/2396[65-99]/1586[28-63].png" -o "tiles/18/2396#1/1586#2.png" --create-dirs
+

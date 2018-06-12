@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Download tiles around CNU.
+
+curl "http://b.tile.openstreetmap.org/16/188[38-48]/254[89-97].png" -o "tiles/16/188#1/254#2.png" --create-dirs
+
+curl "http://c.tile.openstreetmap.org/17/376[75-93]/509[78-95].png" -o "tiles/17/376#1/509#2.png" --create-dirs
+
+curl "http://b.tile.openstreetmap.org/18/753[50-85]/1019[55-90].png" -o "tiles/17/753#1/1019#2.png" --create-dirs
+
