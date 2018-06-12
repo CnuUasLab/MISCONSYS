@@ -4,6 +4,3 @@
 [submodule "Interoperability/interop"]
 	path = Interoperability/interop
 	url = https://github.com/auvsi-suas/interop
-[submodule "electron-ui/Interoperability/MARI"]
-	path = electron-ui/Interoperability/MARI
-	url = http://github.com/vixadd/MARI.git
