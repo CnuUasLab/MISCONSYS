@@ -77,7 +77,7 @@ angular.module('MISCONSYS')
 		}
 	    };
 
-	    // Define getGeolocation
+	    // Define a series of controller functions for the map.
 
 	    vm.getGeolocation = function () {
 		vm.getPosition(vm.enableHighAccuracy, vm.timeout, vm.maximumAge).then(function (position) {
