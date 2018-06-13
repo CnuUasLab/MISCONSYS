@@ -10,8 +10,11 @@
 #==========================================#
 
 import flask
+import requests
+
 from singleton import Singleton
 from flask import request, jsonify
+
 
 #===================================
 #   HTTP Constants Singleton
@@ -79,12 +82,12 @@ def WebappAPIInit(pPort):
 	def api_telemetry():
 		#const = HTTPConstants()
 		return jsonify(const.getTelemetry())
-	
+
 	@app.route('/api/v1/mission', methods=['GET'])
 	def api_mission():
 		#const = HTTPConstants()
 		return jsonify(const.getMission())
-	
+
 	@app.route('/api/v1/obstical_stationary', methods=['GET'])
 	def api_OS():
 		#const = HTTPConstants()
@@ -96,6 +99,19 @@ def WebappAPIInit(pPort):
 		return jsonify(const.getObsticalMoving())
 
 	app.run(host="0.0.0.0", port=pPort, debug=False, use_reloader=False)
+
+
+
+#================================
+#  Function used to return JSON
+# data with Waypoints required by comp.
+#================================
+def grabWaypoints():
+	obj = requests.get("http://0.0.0.0:5000/api/v1/mission")
+	WYP = obj.json()['WYP']
+
+	return WYP
+
 
 if __name__ == "__main__":
 	WebappAPIInit()
