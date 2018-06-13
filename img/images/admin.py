@@ -3,7 +3,7 @@
 #    Allows for admin controls in the context of   #
 #    the images being modified.                    #
 #                                                  #
-#               Author: David Kroell               #
+#               Author: davidkroell                #
 #              Version: 0.0.1                      #
 #                                                  #
 #==================================================#
