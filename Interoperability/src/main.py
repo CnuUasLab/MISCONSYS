@@ -13,6 +13,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 from http_handeler import HTTPConstants
 
+import utils
 import http_handeler
 import sys
 import socket
@@ -97,13 +98,14 @@ while True:
         if(udpPacket != None):
             if (udpPacket.get_type() == "GLOBAL_POSITION_INT"):
                 telemPacket = udpPacket
-                
+
+
                 # populate the coordinate elements of the telemetry module
                 telemetry['longitude'] = float(telemPacket.lon)/10000000
                 telemetry['latitude'] = float(telemPacket.lat)/10000000
                 telemetry['heading'] = float(telemPacket.hdg)/1000
-                telemetry['altitude'] = float(telemPacket.alt)/10000
-
+                telemetry['altitude'] = float(utils.meters_to_feet(float(telemPacket.alt)/10000))
+                
                 # print telemetry
                 #print miss.getSystemTime()
 
@@ -125,16 +127,16 @@ while True:
             HTTPConst.setMission(missPacket)
             
             # Recalculate the number of seconds elapsed
-            elapsed = time.time() - startTime
+            #elapsed = time.time() - startTime
             
             # If one second has elapsed reset the clock and print the frequency.
-            if elapsed >= 1:
-                global packets_sent
-                telemetry['frequency'] = packets_sent
+            #if elapsed >= 1:
+            #    global packets_sent
+            #    telemetry['frequency'] = packets_sent
 
                 # print telemetry['frequency']
-                startTime = time.time()
-                packets_sent = 0
+            #    startTime = time.time()
+            #    packets_sent = 0
 
     except KeyboardInterrupt:
         break

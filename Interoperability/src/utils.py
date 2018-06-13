@@ -66,6 +66,13 @@ class Utils():
 #		for (word in self.getPreviousLogs()):
 #			f.write(word)
 
+#==============================
+#  Meters to Feet conversion function
+# for use by Interoperbility publishing
+#==============================
+def meters_to_feet(pMeters):
+	feet = pMeters * 3.280839895
+	return (feet)
 
 if __name__=="main":
         print "Testing Queue buffer utility:"
