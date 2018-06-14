@@ -20,7 +20,7 @@ from rest_framework.response import Response
 
 from .models import Image
 from .models import Target
-from .serializers import ImageSerializer
+from .serializers import ImageSerializer, TargetSerializer
 
 def index(request):
     return HttpResponse("Hello, world. you're at the images index.")
@@ -30,7 +30,7 @@ def index(request):
 # View Set for an independant image.
 # -----------------------------------
 #  Allows us to configure functions at
-#   specific ednpoints.
+#   specific endpoints.
 #=====================================
 class ImageViewSet(ModelViewSet):
 
@@ -55,3 +55,14 @@ class ImageViewSet(ModelViewSet):
     #======================================
     def get(self, request, format=None):
         return Reponse(Image.objects.all(), status=status.HTTP_200_OK)
+
+#===================================
+# View set for an independant Target
+# ----------------------------------
+# Allows us to configure functions
+#   at specific end points.
+#===================================
+class TargetViewSet(ModelViewSet):
+    # Required Attributes
+    queryset = Target.objects.all()
+    serializer_class = TargetSerializer

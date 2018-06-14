@@ -44,17 +44,19 @@ class Image(models.Model):
 #    - alphanumeric:       The character letter appearing in the shape.
 #-------------------------
 class Target(models.Model):
-    target_id = models.AutoField(primary_key=True)
     image     = models.ForeignKey(Image, on_delete=models.CASCADE)
-
-    shape_choices = (
+    
+    SHAPE_CHOICES = (
         ('Ci', 'Circle'),
         ('St', 'Star'),
+        ('Sq', 'Square'),
         ('Sc', 'Semicircle'),
         ('Tr', 'Triangle')
     )
 
-    shape_color = (
+    shape_choices = models.CharField(max_length=10, choices=SHAPE_CHOICES, default="Ci")
+    
+    COLORS = (
         ('r', 'Red'),
         ('b', 'Blue'),
         ('g', 'Green'),
@@ -63,13 +65,21 @@ class Target(models.Model):
         ('o', 'Orange')
     )
     
-    alphanumeric_color = (
-        ('r', 'Red'),
-        ('b', 'Blue'),
-        ('g', 'Green'),
-        ('y', 'Yellow'),
-        ('p', 'Purple'),
-        ('o', 'Orange')
+    shape_color = models.CharField(max_length=10, choices=COLORS, default="r")
+    
+    alphanumeric = models.CharField(max_length=1)
+    alphanumeric_color = models.CharField(max_length=10, choices=COLORS, default="r")
+
+    DIRECTION = (
+        ('ne', 'North East'),
+        ('n', 'North'),
+        ('nw', 'North West'),
+        ('w', 'West'),
+        ('sw', 'South West'),
+        ('s', 'South'),
+        ('se', 'South East'),
+        ('e', 'East'),
     )
 
-    alphanumeric = models.CharField(max_length=1)
+    direction = models.CharField(max_length=20, choices=DIRECTION, default='ne')
+    

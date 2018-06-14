@@ -18,6 +18,9 @@ from rest_framework import renderers, routers
 
 router = routers.DefaultRouter()
 router.register('images', views.ImageViewSet,  'images')
+router.register('targets', views.TargetViewSet, 'targets')
+
+
 # Wire up our API using automatic URL Routing.
 # -- Different routes that are possible to access.
 urlpatterns = [
