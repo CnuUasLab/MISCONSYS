@@ -31,7 +31,8 @@ class IMGClient():
 
     
     def getImage(self, img_id):
-        access = 'http://'+self.url+':'+self.port+self.IMAGES+'/'+img_id
+        access = 'http://'+self.url+':'+self.port+self.IMAGES+str(img_id)
+        print access
         result = self.session.get(access, timeout=10)
         return(result.json())
 
@@ -49,7 +50,7 @@ class IMGClient():
         result = self.session.post(access, timeout=10, data=values, files=mFiles)
 
         if result.ok:
-            return result
+            return result.json()
         else:
             raise Exception(result)
 
@@ -61,9 +62,9 @@ class IMGClient():
         return result.json()
 
     def getTarget(self, target_id):
-        access = 'http://'+self.url+':'+self.port+self.TARGETS+'/'+target_id
+        access = 'http://'+self.url+':'+self.port+self.TARGETS+'/'+str(target_id)
         result = self.session.get(access, timeout=10)
-        return(result.json())
+        return(result)
 
     def postTarget(self, img_id, shape, shape_color, alphanumeric, alphanumeric_color):
          access = 'http://'+self.url+':'+self.port+self.TARGETS

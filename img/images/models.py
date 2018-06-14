@@ -47,28 +47,39 @@ class Target(models.Model):
     image     = models.ForeignKey(Image, on_delete=models.CASCADE)
     
     SHAPE_CHOICES = (
-        ('Ci', 'Circle'),
-        ('St', 'Star'),
-        ('Sq', 'Square'),
-        ('Sc', 'Semicircle'),
-        ('Tr', 'Triangle')
+        ('circle', 'Circle'),
+        ('star', 'Star'),
+        ('square', 'Square'),
+        ('triangle', 'Triangle'),
+        ('pentagon', 'Pentagon'),
+        ('quarter_circle', 'Quarter-Circle'),
+        ('semicircle', 'Semi-Circle'),
+        ('trapezoid', 'Trapezoid'),
+        ('heptagon', 'Heptagon'),
+        ('hexagon', 'Hexagon'),
+        ('star', 'Star'),
+        ('cross', 'Cross')
     )
 
-    shape_choices = models.CharField(max_length=10, choices=SHAPE_CHOICES, default="Ci")
+    shape_choices = models.CharField(max_length=10, choices=SHAPE_CHOICES, default="circle")
     
     COLORS = (
-        ('r', 'Red'),
-        ('b', 'Blue'),
-        ('g', 'Green'),
-        ('y', 'Yellow'),
-        ('p', 'Purple'),
-        ('o', 'Orange')
+        ('white', 'White'),
+        ('black', 'Black'),
+        ('grey', 'Grey'),
+        ('red', 'Red'),
+        ('blue', 'Blue'),
+        ('orange', 'Orange'),
+        ('green', 'Green'),
+        ('yellow', 'Yellow'),
+        ('purple', 'Purple'),
+        ('brown', 'Brown')
     )
     
-    shape_color = models.CharField(max_length=10, choices=COLORS, default="r")
+    shape_color = models.CharField(max_length=10, choices=COLORS, default="white")
     
     alphanumeric = models.CharField(max_length=1)
-    alphanumeric_color = models.CharField(max_length=10, choices=COLORS, default="r")
+    alphanumeric_color = models.CharField(max_length=10, choices=COLORS, default="white")
 
     DIRECTION = (
         ('ne', 'North East'),
