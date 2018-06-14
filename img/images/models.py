@@ -4,9 +4,9 @@
 #                                            #
 #   Model to define the Database Schema by.  #
 #                                            #
-#          Author: David Kroell              #
+#          Author: davidkroell               #
 #         Version: 0.0.1                     #
-#                                            #
+#                                                                                                              #
 #============================================#
 
 from __future__ import unicode_literals

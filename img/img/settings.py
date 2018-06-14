@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'images',
+    'rest_framework',
+    # 'images', Causing ImproperConfiguration exception
 ]
 
 MIDDLEWARE = [

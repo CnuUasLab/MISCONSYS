@@ -26,7 +26,7 @@ from django.views.static import serve
 
 
 urlpatterns = [
-    url(r'^images/', include('images.urls')),
+    url(r'^api/', include('images.urls', namespace='api')),
     url(r'^admin/', admin.site.urls),
 ]
 
