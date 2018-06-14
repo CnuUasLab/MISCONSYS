@@ -61,7 +61,7 @@ class Target(models.Model):
         ('cross', 'Cross')
     )
 
-    shape_choices = models.CharField(max_length=10, choices=SHAPE_CHOICES, default="circle")
+    shape_choices = models.CharField(max_length=15, choices=SHAPE_CHOICES, default="circle")
     
     COLORS = (
         ('white', 'White'),
