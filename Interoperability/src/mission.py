@@ -11,6 +11,7 @@ import requests
 import thread
 import re
 import time
+import urllib
 
 from utils import Utils
 from multiprocessing import Process, Queue
@@ -285,9 +286,12 @@ class Mission():
 
         target = self.client.post_odlc(target)
 
-        with open('/home/frostbyte/MISCONSYS/Interoperability/img/interop.jpg', 'rb') as f:
-            image_data = f.read()
-            self.client.put_odlc_image(target.id, image_data)
+        #with open(image_path, 'rb') as f:
+        #    image_data = f.read()
+        #    self.client.put_odlc_image(target.id, image_data)
+
+	image_data = urllib.urlopen(image_path).read()
+        self.client.put_odlc_image(target.id, image_data)
 
     #==========================
     #
