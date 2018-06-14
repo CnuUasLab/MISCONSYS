@@ -1,0 +1,23 @@
+{
+    "auvsi":{
+        "host":"http://10.10.130.10",
+        "port":"80",
+	"username":"newport",
+	"password":"9257994192"
+    },
+
+    "mavl-incoming":{
+        "host":"0.0.0.0",
+        "port":"14550"
+    },
+
+    "mavl-outgoing" : {
+        "host":"137.155.41.51",
+        "port":"14551"
+    },
+
+    "web_api" : {
+		"host":"0.0.0.0",
+		"port":"5000"
+	}
+}

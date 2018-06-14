@@ -20,13 +20,8 @@ from .models import Target
 def index(request):
     return HttpResponse("Hello, world. you're at the images index.")
 
-
-
 def images(request):
     return HttpResponse("Returning all images")
-
-def target(request, target_id):
-    return HttpResponse("Getting specific target")
 
 def targets(request):
     return HttpResponse("Getting all targets")
