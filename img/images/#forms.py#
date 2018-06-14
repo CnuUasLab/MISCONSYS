@@ -1,0 +1,13 @@
+#========================================#
+#   Form to render image data when       #
+#    it is uploaded to the server        #
+#                                        #
+#        Author: davidkroell             #
+#       Version: 1.0.13                  #
+#                                        #
+#========================================#
+
+from django import forms
+
+class ImageForm(forms.Form):
+    imageField = forms.ImageField
