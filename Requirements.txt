@@ -6,6 +6,9 @@ Pillow==2.4.0
 pymavlink==2.2.8
 django-tastypie==0.14.1
 python-mimeparse==1.6.0
+markdown==2.6.11
+django-filter==1.1.0
+djangorestframework==3.8.2
 
 Jinja2==2.10
 MarkupSafe==1.0
