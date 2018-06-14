@@ -53,6 +53,7 @@ class Mission():
         self.mission_components['FLZ'] = {}
 
         self.telemetry_buffer = Queue()
+      
         self.sysTime = None
         
         self.username = usr
@@ -193,16 +194,23 @@ class Mission():
     #=================================================
     def postTarget(self, pId, pUser, pType, pLat, pLon, pOrient, pShape,
                        pBgColor, pAlphanumeric, pAlphanumericColor, pDescription,
-                       pActionableOverride, pAutonomous=False, pTeamId="CNU_IMPRINT",
+                       pActionableOverride=False, pAutonomous=False, pTeamId="CNU_IMPRINT",
                        pImagePath=None):
         
-        mTarget = interop.Target(id=pId, user=pUser, type=pType,
-                                    latitutde=pLat, longitude=pLon,
-                                    orientation=pOrient, shape=pShape,
-                                    background_color=pBgColor, alphanumeric=pAlphanumeric,
-                                    alphanumeric_color=pAlphanumericColor, description=pDescription,
-                                    autonomous=pAutonomous, team_id=pTeamId,
-                                    actionable_override=pActionableOverride)
+        mTarget = interop.Odlc(id=pId, user=pUser, type=pType,
+                                latitude=pLat, longitude=pLon,
+                                orientation=pOrient, shape=pShape,
+                                background_color=pBgColor, alphanumeric=pAlphanumeric,
+                                alphanumeric_color=pAlphanumericColor, description=pDescription,
+                                actionable_override=pActionableOverride,
+                                autonomous=pAutonomous, team_id=pTeamId)
+
+        target = self.client.post_odlc(mTarget)
+
+        if not pImagePath==None:
+            with open(pImagePath, 'rb') as f:
+                image_data = f.read()
+                self.client.put_odlc_image(target.id, image_data)
                             
 	#========================
 	# Post telemetry to the server.
@@ -264,9 +272,9 @@ class Mission():
 	#	  color - color of the target text.
 	#	  image_path - path of the image where target is found.
 	#============================
-    def postTarget(self, typ='standard', lat=38.145215, lon=-76.427942, ori='n', shp='square', bgc='green', letter='A', color='white', image_path='~/image.png'):
+    def postImage(self, typ='standard', lat=38.145215, lon=-76.427942, ori='n', shp='square', bgc='green', letter='A', color='white', image_path='~/image.png'):
 
-        target = interop.Target(type=typ,
+        target = interop.Odlc(type=typ,
                         latitude=lat,
                         longitude=lon,
                         orientation=ori,
@@ -275,12 +283,11 @@ class Mission():
                         alphanumeric=letter,
                         alphanumeric_color=color)
 
-        target = client.post_target(target)
+        target = self.client.post_odlc(target)
 
-        with open(image_path, 'rb') as f:
+        with open('/home/frostbyte/MISCONSYS/Interoperability/img/interop.jpg', 'rb') as f:
             image_data = f.read()
-            self.client.put_target_image(target.id, image_data)
-
+            self.client.put_odlc_image(target.id, image_data)
 
     #==========================
     #
