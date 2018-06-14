@@ -17,3 +17,9 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('id', 'img_photo', 'img_path', 'lon', 'lat')
+
+
+class TargetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Target
+        fields = ('id', 'image', 'shape_choices', 'shape_color', 'alphanumeric',  'alphanumeric_color', 'direction')

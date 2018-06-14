@@ -52,3 +52,27 @@ class IMGClient():
             return result
         else:
             raise Exception(result)
+
+
+    def getTargets(self):
+        access = 'http://'+self.url+':'+self.port+self.TARGETS
+        result = self.session.get(access, timeout=10)
+
+        return result.json()
+
+    def getTarget(self, target_id):
+        access = 'http://'+self.url+':'+self.port+self.TARGETS+'/'+target_id
+        result = self.session.get(access, timeout=10)
+        return(result.json())
+
+    def postTarget(self, img_id, shape, shape_color, alphanumeric, alphanumeric_color):
+         access = 'http://'+self.url+':'+self.port+self.TARGETS
+         values = {
+             'image': img_id,
+             'shape_choices':shape,
+             'shape_color':shape_color,
+             'alphanumeric':alphanumeric,
+             'alphanumeric_color':alphanumeric_color
+         }
+
+         result = self.session.post(access, timeout=10, data=values)
