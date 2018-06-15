@@ -26,7 +26,7 @@ These systems work in tandem with one another.
 ```bash
 $ # From the Root of the repository
 $ git submodule update --init --recursive
-$ sudo pip install -r ./Requirements.txt
+$ sudo -H pip install -r ./Requirements.txt
 ```
 
 #### IMG
