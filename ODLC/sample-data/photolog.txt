@@ -1,0 +1,2 @@
+photoNumber, fileName, lat, lng, relativeAltitude, roll, pitch, yaw, mavlinkPhotoID
+1, /some/dir/sample.jpg, 0.00000, 0.00000, 60, 0.0, 0.0, 180.0, 1
