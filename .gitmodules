@@ -4,3 +4,6 @@
 [submodule "Interoperability/interop"]
 	path = Interoperability/interop
 	url = https://github.com/auvsi-suas/interop
+[submodule "Interoperability/mavproxy"]
+	path = Interoperability/mavproxy
+	url = https://github.com/ArduPilot/mavproxy
